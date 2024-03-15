@@ -6,6 +6,8 @@ using UnityEngine;
 public class CharacterMovement : MonoBehaviour
 {
     Animator animator;
+    public float jumpTime;
+    public bool isJumping;
 
     void Start()
     {
@@ -20,6 +22,7 @@ public class CharacterMovement : MonoBehaviour
     void Update()
     {
         Movement();
+        Jump();
     }
 
     private void Movement()
@@ -29,7 +32,16 @@ public class CharacterMovement : MonoBehaviour
 
         animator.SetFloat("InputX", Horizontal);
         animator.SetFloat("InputY", Vertical);
+    }
+
+    private void Sprint()
+    {
 
     }
 
+    private void Jump()
+    {
+        //Eðer karakter yerdeyse ve önceki zýplama eylemi bittiyse zýplayabilsin
+       
+    }
 }
