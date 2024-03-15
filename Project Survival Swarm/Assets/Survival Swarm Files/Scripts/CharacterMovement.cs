@@ -5,17 +5,12 @@ using UnityEngine;
 
 public class CharacterMovement : MonoBehaviour
 {
-    //CharacterController characterController;
-    //Camera cam;
     Animator animator;
 
-    //[SerializeField] private float turningSpeed;
     void Start()
     {
 
-        //characterController = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
-        //cam = Camera.main;
 
         //Mouse'u baþlangýçta oyun ekranýna kitle
         Cursor.visible = false;
@@ -25,7 +20,6 @@ public class CharacterMovement : MonoBehaviour
     void Update()
     {
         Movement();
-        //Rotation();
     }
 
     private void Movement()
@@ -36,16 +30,6 @@ public class CharacterMovement : MonoBehaviour
         animator.SetFloat("InputX", Horizontal);
         animator.SetFloat("InputY", Vertical);
 
-        //Vector3 direction = transform.right * Horizontal + transform.forward * Vertical;
-        //characterController.Move();
     }
 
-    //private void Rotation()
-    //{
-
-    //    //Mouse'u çevirdiðim yöne dönecek
-    //    float cameraRotation = cam.transform.rotation.eulerAngles.y;
-    //    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, cameraRotation, 0), Time.deltaTime * turningSpeed);
-
-    //}
 }
