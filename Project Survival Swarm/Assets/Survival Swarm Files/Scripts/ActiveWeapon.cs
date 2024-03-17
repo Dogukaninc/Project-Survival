@@ -6,16 +6,21 @@ using UnityEngine.Animations;
 
 public class ActiveWeapon : MonoBehaviour
 {
-    RaycastWeapon weapon;
-    public UnityEngine.Animations.Rigging.Rig handIk;
-    public Transform weaponParent;
+    public enum WeaponSlot
+    {
+        Primary = 0,
+        Secondary = 1
+    }
+
     public Animator rigController;
+    public Transform[] weaponSlots;
 
     public Transform crossHairTarget;
 
-    public Transform weaponRightGrip;
-    public Transform weaponLeftGrip;
+    RaycastWeapon[] equipped_weapons = new RaycastWeapon[2];
+    int activeWeaponIndex;
 
+    bool isHolstered = false;
 
     void Start()
     {
@@ -26,11 +31,20 @@ public class ActiveWeapon : MonoBehaviour
         }
 
     }
+    RaycastWeapon GetWeapon(int index)
+    {
+        if (index < 0 || index >= equipped_weapons.Length)// Out of bounds hatasý almamak için
+        {
+            return null;
+        }
+        return equipped_weapons[index];
+    }
 
     void Update()
     {
+        var weapon = GetWeapon(activeWeaponIndex);
 
-        if (weapon)
+        if (weapon && !isHolstered)
         {
             if (Input.GetMouseButton(0))
             {
@@ -40,7 +54,6 @@ public class ActiveWeapon : MonoBehaviour
             {
                 weapon.StopFiring();
             }
-
             weapon.UpdateBullets(Time.deltaTime);
 
             if (weapon.isFiring)
@@ -52,14 +65,28 @@ public class ActiveWeapon : MonoBehaviour
         //Silahý kýnýna koy
         if (Input.GetKeyDown(KeyCode.X))
         {
-            bool isHolstered = rigController.GetBool("holster_weapon");
-            rigController.SetBool("holster_weapon", !isHolstered);
+            ToggleActiveWeapon();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            SetActiveWeapon(WeaponSlot.Primary);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            SetActiveWeapon(WeaponSlot.Secondary);
         }
 
     }
 
     public void Equip(RaycastWeapon newWeapon)
     {
+
+        Debug.Log("Silah kuþandým");
+        //Eger ayný türden bir silah alýyorsak elimizdekini yok etmemiz lazým. Ancak farklý türden bir silah alýyorsak elimizdeki yok olmamalý(Secondary-Primary)
+
+        int weaponSlotIndex = (int)newWeapon.weaponSlot;//PRimary ya da secondary silah seçimi için slot indexini alýyor
+        var weapon = GetWeapon(weaponSlotIndex);
         if (weapon)
         {
             Destroy(weapon.gameObject);
@@ -67,13 +94,76 @@ public class ActiveWeapon : MonoBehaviour
 
         weapon = newWeapon;
         weapon.raycastDestination = crossHairTarget;
-        weapon.transform.parent = weaponParent;
-        weapon.transform.localPosition = Vector3.zero;
-        weapon.transform.localRotation = Quaternion.identity;
+        weapon.transform.SetParent(weaponSlots[weaponSlotIndex], false);
+        equipped_weapons[weaponSlotIndex] = weapon;
 
-        Debug.Log("Silah kuþandým");
-        rigController.Play("equip_" + weapon.weaponName);
+        SetActiveWeapon(newWeapon.weaponSlot);
+
+        //weapon.transform.localPosition = Vector3.zero; //Set Parent'da false yaparak ile ikisini de çözdük
+        //weapon.transform.localRotation = Quaternion.identity;
+        //activeWeaponIndex = weaponSlotIndex;//Eger elimde assult rifle varken yerden pistol alýrsam otomatik olarak pistole geçecek
+    }
+
+    private void ToggleActiveWeapon()
+    {
+        bool isHolstered = rigController.GetBool("holster_weapon");
+        if (isHolstered)
+        {
+            StartCoroutine(ActivateWeapon(activeWeaponIndex));
+        }
+        else
+        {
+            StartCoroutine(HolsterWeapon(activeWeaponIndex));
+        }
+    }
+
+    private void SetActiveWeapon(WeaponSlot weaponSlot)
+    {
+        int holsterIndex = activeWeaponIndex;
+        int activateIndex = (int)weaponSlot;
+
+        if (holsterIndex == activateIndex)
+        {
+            holsterIndex = -1;
+        }
+
+        StartCoroutine(SwitchWeapon(holsterIndex, activateIndex));
 
     }
 
+    IEnumerator SwitchWeapon(int holsterIndex, int activeIndex)
+    {
+        yield return StartCoroutine(HolsterWeapon(holsterIndex));
+        yield return StartCoroutine(ActivateWeapon(activeIndex));
+        activeWeaponIndex = activeIndex;
+
+    }
+    IEnumerator HolsterWeapon(int index)
+    {
+        isHolstered = true;
+        var weapon = GetWeapon(index);
+        if (weapon)
+        {
+            rigController.SetBool("holster_weapon", true);
+            do
+            {
+                yield return new WaitForEndOfFrame();
+            } while (rigController.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f);
+        }
+
+    }
+    IEnumerator ActivateWeapon(int index)
+    {
+        var weapon = GetWeapon(index);
+        if (weapon)
+        {
+            rigController.SetBool("holster_weapon", false);
+            rigController.Play("equip_" + weapon.weaponName);
+            do
+            {
+                yield return new WaitForEndOfFrame();
+            } while (rigController.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f);
+            isHolstered = false;
+        }
+    }
 }
