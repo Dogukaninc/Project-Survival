@@ -22,7 +22,6 @@ public class CharacterMovement : MonoBehaviour
     void Update()
     {
         Movement();
-        Jump();
     }
 
     private void Movement()
@@ -34,14 +33,4 @@ public class CharacterMovement : MonoBehaviour
         animator.SetFloat("InputY", Vertical);
     }
 
-    private void Sprint()
-    {
-
-    }
-
-    private void Jump()
-    {
-        //Eðer karakter yerdeyse ve önceki zýplama eylemi bittiyse zýplayabilsin
-       
-    }
 }

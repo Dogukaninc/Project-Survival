@@ -27,6 +27,7 @@ public class CharacterAiming : MonoBehaviour
     private void LateUpdate()
     {
         //Çalýþmýyor
+        /*
         if (weapon)
         {
             if (Input.GetMouseButton(0))
@@ -45,6 +46,6 @@ public class CharacterAiming : MonoBehaviour
                 weapon.UpdateFiring(Time.deltaTime);
             }
         }
-
+        */
     }
 }

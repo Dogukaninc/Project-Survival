@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
 
 public class RaycastWeapon : MonoBehaviour
@@ -26,12 +25,19 @@ public class RaycastWeapon : MonoBehaviour
     public string weaponName;
 
     public TrailRenderer tracerEffect;
+    public WeaponRecoil recoil;
+
 
     Ray ray;
     RaycastHit hitInfo;
     private float accumulatedTime;
     private List<Bullet> bullets = new List<Bullet>();
     private float maxLifeTime = 3.0f;
+
+    private void Awake()
+    {
+        recoil = GetComponent<WeaponRecoil>();
+    }
 
     Vector3 GetPosition(Bullet bullet)
     {
@@ -55,9 +61,12 @@ public class RaycastWeapon : MonoBehaviour
     {
         isFiring = true;
         accumulatedTime = 0.0f;
-        FireBullet();
+        recoil.Reset();
 
     }
+
+    //Elemanda burda UpdateFiring var
+
     public void UpdateFiring(float deltaTime)
     {
         accumulatedTime += deltaTime;
@@ -115,7 +124,8 @@ public class RaycastWeapon : MonoBehaviour
             bullet.tracer.transform.position = hitInfo.point;
             bullet.time = maxLifeTime;
 
-        }else
+        }
+        else
         {
             bullet.tracer.transform.position = end;
         }
@@ -131,6 +141,8 @@ public class RaycastWeapon : MonoBehaviour
         Vector3 velocity = (raycastDestination.position - raycastOrigin.position).normalized * bulletSpeed;
         var bullet = CreateBullet(raycastOrigin.position, velocity);
         bullets.Add(bullet);
+
+        recoil.GenerateRecoil(weaponName);
 
         /*
         ray.origin = raycastOrigin.position;

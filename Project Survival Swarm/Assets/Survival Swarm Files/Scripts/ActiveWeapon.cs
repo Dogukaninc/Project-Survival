@@ -16,6 +16,7 @@ public class ActiveWeapon : MonoBehaviour
     public Transform[] weaponSlots;
 
     public Transform crossHairTarget;
+    public Cinemachine.CinemachineFreeLook playerCamera;
 
     RaycastWeapon[] equipped_weapons = new RaycastWeapon[2];
     int activeWeaponIndex;
@@ -94,14 +95,13 @@ public class ActiveWeapon : MonoBehaviour
 
         weapon = newWeapon;
         weapon.raycastDestination = crossHairTarget;
+        weapon.recoil.playerCam = playerCamera;
+        weapon.recoil.rigController = rigController;
         weapon.transform.SetParent(weaponSlots[weaponSlotIndex], false);
         equipped_weapons[weaponSlotIndex] = weapon;
 
         SetActiveWeapon(newWeapon.weaponSlot);
 
-        //weapon.transform.localPosition = Vector3.zero; //Set Parent'da false yaparak ile ikisini de çözdük
-        //weapon.transform.localRotation = Quaternion.identity;
-        //activeWeaponIndex = weaponSlotIndex;//Eger elimde assult rifle varken yerden pistol alýrsam otomatik olarak pistole geçecek
     }
 
     private void ToggleActiveWeapon()
@@ -138,6 +138,7 @@ public class ActiveWeapon : MonoBehaviour
         activeWeaponIndex = activeIndex;
 
     }
+
     IEnumerator HolsterWeapon(int index)
     {
         isHolstered = true;
@@ -152,6 +153,7 @@ public class ActiveWeapon : MonoBehaviour
         }
 
     }
+
     IEnumerator ActivateWeapon(int index)
     {
         var weapon = GetWeapon(index);
