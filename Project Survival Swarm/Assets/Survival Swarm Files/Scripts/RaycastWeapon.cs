@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class RaycastWeapon : MonoBehaviour
 {
@@ -32,6 +33,8 @@ public class RaycastWeapon : MonoBehaviour
     private float accumulatedTime;
     private List<Bullet> bullets = new List<Bullet>();
     private float maxLifeTime = 3.0f;
+
+    public float damage = 10f;
 
     Vector3 GetPosition(Bullet bullet)
     {
@@ -94,31 +97,58 @@ public class RaycastWeapon : MonoBehaviour
 
     private void DestroyBullets()
     {
-        bullets.RemoveAll(bullet => bullet.time >= maxLifeTime);
+        bullets.RemoveAll(bullet =>
+        {
+            if (bullet.time >= maxLifeTime)
+            {
+                if (bullet.tracer != null)
+                {
+                    Destroy(bullet.tracer.gameObject);
+                }
+                return true;
+            }
+            return false;
+        });
     }
 
-    private void RaycastSegment(Vector3 start, Vector3 end, Bullet bullet)
+    void RaycastSegment(Vector3 start, Vector3 end, Bullet bullet)
     {
         Vector3 direction = end - start;
-        float distance = (end - start).magnitude;
+        float distance = direction.magnitude;
         ray.origin = start;
         ray.direction = direction;
 
+        Color debugColor = Color.green;
+
         if (Physics.Raycast(ray, out hitInfo, distance))
         {
-            //Debug.DrawLine(ray.origin, hitInfo.point, Color.red, 1f);
-
             hitEffect.transform.position = hitInfo.point;
             hitEffect.transform.forward = hitInfo.normal;
             hitEffect.Emit(1);
 
-            bullet.tracer.transform.position = hitInfo.point;
             bullet.time = maxLifeTime;
+            end = hitInfo.point;
+            debugColor = Color.red;
 
-        }else
+
+            var rb2 = hitInfo.collider.GetComponent<Rigidbody>();
+            if (rb2)
+            {
+                rb2.AddForceAtPosition(ray.direction * 20, hitInfo.point, ForceMode.Impulse);
+            }
+
+            var hitBox = hitInfo.collider.GetComponent<HitBox>();
+            if (hitBox)
+            {
+                hitBox.RaycastHit(this, ray.direction);
+            }
+        }
+
+        if (bullet.tracer != null)
         {
             bullet.tracer.transform.position = end;
         }
+
     }
 
     private void FireBullet()

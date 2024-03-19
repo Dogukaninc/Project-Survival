@@ -50,10 +50,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5b408c96c218c14d836982e7155e022, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponSlot: 0
   isFiring: 0
-  fireRate: 25
-  bulletSpeed: 1000
-  bulletDrop: 300
+  fireRate: 15
+  bulletSpeed: 20
+  bulletDrop: 0
   muzzleFlash:
   - {fileID: 4093538973418660126}
   - {fileID: 4093538973418762330}
@@ -63,6 +64,7 @@ MonoBehaviour:
   weaponName: rifle
   tracerEffect: {fileID: 4853584624810719679, guid: 45fe19f4976d31d47b0e4cb97425002f,
     type: 3}
+  damage: 1
 --- !u!1 &1155104934313301005
 GameObject:
   m_ObjectHideFlags: 0
