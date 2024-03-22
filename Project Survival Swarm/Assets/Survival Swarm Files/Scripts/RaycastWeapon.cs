@@ -65,8 +65,6 @@ public class RaycastWeapon : MonoBehaviour
 
     }
 
-    //Elemanda burda UpdateFiring var
-
     public void UpdateFiring(float deltaTime)
     {
         accumulatedTime += deltaTime;

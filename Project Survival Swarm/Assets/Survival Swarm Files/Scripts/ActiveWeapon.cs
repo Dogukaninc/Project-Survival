@@ -55,6 +55,7 @@ public class ActiveWeapon : MonoBehaviour
             {
                 weapon.StopFiring();
             }
+
             weapon.UpdateBullets(Time.deltaTime);
 
             if (weapon.isFiring)
