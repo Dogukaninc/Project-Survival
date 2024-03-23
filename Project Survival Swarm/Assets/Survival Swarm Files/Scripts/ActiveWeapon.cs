@@ -45,23 +45,8 @@ public class ActiveWeapon : MonoBehaviour
     {
         var weapon = GetWeapon(activeWeaponIndex);
 
-        if (weapon && !isHolstered)
-        {
-            if (Input.GetMouseButton(0))
-            {
-                weapon.StartFiring();
-            }
-            else if (Input.GetMouseButtonUp(0))
-            {
-                weapon.StopFiring();
-            }
-
-            weapon.UpdateBullets(Time.deltaTime);
-
-            if (weapon.isFiring)
-            {
-                weapon.UpdateFiring(Time.deltaTime);
-            }
+        if (weapon && !isHolstered) {
+            weapon.UpdateWeapon(Time.deltaTime);
         }
 
         //Silahý kýnýna koy

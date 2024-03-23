@@ -26,6 +26,7 @@ public class CharacterAiming : MonoBehaviour
 
     private void LateUpdate()
     {
+        //weapon.UpdateWeapon(Time.deltaTime);
         //Çalýþmýyor
         /*
         if (weapon)

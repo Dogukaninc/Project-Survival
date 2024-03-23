@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class WeaponRecoil : MonoBehaviour
 {
@@ -13,16 +14,15 @@ public class WeaponRecoil : MonoBehaviour
     public float duration;
 
 
-
-    private float verticalRecoil;
-    private float horizontalRecoil;
+    float verticalRecoil;
+    float horizontalRecoil;
 
     float time;
     int index;
 
     private void Awake()
     {
-        cameraShake = GetComponent<Cinemachine.CinemachineImpulseSource>();
+        cameraShake = GetComponent<CinemachineImpulseSource>();
     }
 
     public void Reset()
@@ -32,6 +32,7 @@ public class WeaponRecoil : MonoBehaviour
 
     int NextIndex(int index)
     {
+        Debug.Log("Sýradaki index");
         return (index + 1) % recoilPattern.Length;
     }
 
@@ -46,7 +47,7 @@ public class WeaponRecoil : MonoBehaviour
 
         index = NextIndex(index);
 
-        rigController.Play("weapon_recoil_" + weaponName, 1, 0.0f);
+        rigController.Play("weapon_recoil_" + weaponName, 1, -1f);
 
     }
 
@@ -54,8 +55,8 @@ public class WeaponRecoil : MonoBehaviour
     {
         if (time > 0)
         {
-            playerCam.m_YAxis.Value -= ((verticalRecoil / 1000) * Time.deltaTime) / duration;
-            playerCam.m_XAxis.Value -= ((horizontalRecoil / 10) * Time.deltaTime) / duration;
+            playerCam.m_YAxis.Value -= ((verticalRecoil /1000) * Time.deltaTime) / duration;
+            playerCam.m_XAxis.Value -= ((horizontalRecoil /10) * Time.deltaTime) / duration;
             time -= Time.deltaTime;
 
         }

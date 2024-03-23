@@ -34,10 +34,12 @@ public class RaycastWeapon : MonoBehaviour
     private List<Bullet> bullets = new List<Bullet>();
     private float maxLifeTime = 3.0f;
 
-    private void Awake()
+    /*
+    private void Awake()//Awake'di
     {
         recoil = GetComponent<WeaponRecoil>();
     }
+    */
 
     Vector3 GetPosition(Bullet bullet)
     {
@@ -64,6 +66,19 @@ public class RaycastWeapon : MonoBehaviour
         recoil.Reset();
 
     }
+    public void UpdateWeapon(float deltaTime) {
+        if (Input.GetButton("Fire1")) {
+            StartFiring();
+        }
+        if (isFiring) {
+            UpdateFiring(deltaTime);
+        }
+        UpdateBullets(deltaTime);
+        if (Input.GetButtonUp("Fire1")) {
+            StopFiring();
+        }
+
+    }
 
     public void UpdateFiring(float deltaTime)
     {
@@ -75,12 +90,6 @@ public class RaycastWeapon : MonoBehaviour
             FireBullet();
             accumulatedTime -= fireInterval;
         }
-    }
-
-    public void StopFiring()
-    {
-        isFiring = false;
-
     }
 
     public void UpdateBullets(float deltaTime)
@@ -142,25 +151,12 @@ public class RaycastWeapon : MonoBehaviour
 
         recoil.GenerateRecoil(weaponName);
 
-        /*
-        ray.origin = raycastOrigin.position;
-        ray.direction = raycastDestination.position - raycastOrigin.position;
+    }
 
-        var tracer = Instantiate(tracerEffect, ray.origin, Quaternion.identity);
-        tracer.AddPosition(ray.origin);
+    public void StopFiring()
+    {
+        isFiring = false;
 
-        if (Physics.Raycast(ray, out hitInfo))
-        {
-            Debug.DrawLine(ray.origin, hitInfo.point, Color.red, 1f);
-
-            hitEffect.transform.position = hitInfo.point;
-            hitEffect.transform.forward = hitInfo.normal;
-            hitEffect.Emit(1);
-
-            tracer.transform.position = hitInfo.point;
-
-        }
-        */
     }
 
 }
