@@ -17,6 +17,8 @@ public class ActiveWeapon : MonoBehaviour
 
     public Transform crossHairTarget;
     public Cinemachine.CinemachineFreeLook playerCamera;
+    public AmmoWidget ammoWidget;
+
 
     RaycastWeapon[] equipped_weapons = new RaycastWeapon[2];
     int activeWeaponIndex;
@@ -30,8 +32,13 @@ public class ActiveWeapon : MonoBehaviour
         {
             Equip(existingWeapon);
         }
-
     }
+
+    public RaycastWeapon GetActiveWeapon()
+    {
+        return GetWeapon(activeWeaponIndex);
+    }
+         
     RaycastWeapon GetWeapon(int index)
     {
         if (index < 0 || index >= equipped_weapons.Length)// Out of bounds hatasý almamak için
@@ -87,6 +94,8 @@ public class ActiveWeapon : MonoBehaviour
         equipped_weapons[weaponSlotIndex] = weapon;
 
         SetActiveWeapon(newWeapon.weaponSlot);
+
+        ammoWidget.Refresh(weapon.ammoCount);
 
     }
 

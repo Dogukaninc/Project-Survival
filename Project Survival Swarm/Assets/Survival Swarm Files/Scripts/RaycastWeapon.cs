@@ -26,7 +26,10 @@ public class RaycastWeapon : MonoBehaviour
 
     public TrailRenderer tracerEffect;
     public WeaponRecoil recoil;
+    public GameObject magazine;
 
+    public int ammoCount;
+    public int clipSize;
 
     Ray ray;
     RaycastHit hitInfo;
@@ -66,15 +69,19 @@ public class RaycastWeapon : MonoBehaviour
         recoil.Reset();
 
     }
-    public void UpdateWeapon(float deltaTime) {
-        if (Input.GetButton("Fire1")) {
+    public void UpdateWeapon(float deltaTime)
+    {
+        if (Input.GetButtonDown("Fire1"))
+        {
             StartFiring();
         }
-        if (isFiring) {
+        if (isFiring)
+        {
             UpdateFiring(deltaTime);
         }
         UpdateBullets(deltaTime);
-        if (Input.GetButtonUp("Fire1")) {
+        if (Input.GetButtonUp("Fire1"))
+        {
             StopFiring();
         }
 
@@ -138,8 +145,11 @@ public class RaycastWeapon : MonoBehaviour
         }
     }
 
-    private void FireBullet()
-    {
+    private void FireBullet() {
+
+        if (ammoCount <= 0) { return; }
+        ammoCount--;
+
         foreach (var particle in muzzleFlash)
         {
             particle.Emit(1);

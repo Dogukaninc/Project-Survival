@@ -32,7 +32,6 @@ public class WeaponRecoil : MonoBehaviour
 
     int NextIndex(int index)
     {
-        Debug.Log("Sýradaki index");
         return (index + 1) % recoilPattern.Length;
     }
 
@@ -46,8 +45,9 @@ public class WeaponRecoil : MonoBehaviour
         verticalRecoil = recoilPattern[index].y;
 
         index = NextIndex(index);
+        Debug.Log($"Sýradaki index: {index}");
 
-        rigController.Play("weapon_recoil_" + weaponName, 1, -1f);
+        rigController.Play("weapon_recoil_" + weaponName, 1, 0f);
 
     }
 
@@ -55,8 +55,8 @@ public class WeaponRecoil : MonoBehaviour
     {
         if (time > 0)
         {
-            playerCam.m_YAxis.Value -= ((verticalRecoil /1000) * Time.deltaTime) / duration;
-            playerCam.m_XAxis.Value -= ((horizontalRecoil /10) * Time.deltaTime) / duration;
+            playerCam.m_YAxis.Value -= ((verticalRecoil / 1000) * Time.deltaTime) / duration;
+            playerCam.m_XAxis.Value -= ((horizontalRecoil / 10) * Time.deltaTime) / duration;
             time -= Time.deltaTime;
 
         }

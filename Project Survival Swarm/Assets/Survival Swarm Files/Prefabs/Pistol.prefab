@@ -59,7 +59,7 @@ MonoBehaviour:
   muzzleFlash:
   - {fileID: 4093538973418660126}
   - {fileID: 4093538973418762330}
-  hitEffect: {fileID: 713418922988047036, guid: 0bee0619a959e7c48a08300f6ab0b1c6,
+  hitEffect: {fileID: 8468078477117572478, guid: b5279ac3734014c40ba81378646ccc23,
     type: 3}
   raycastOrigin: {fileID: 1155104934588900758}
   raycastDestination: {fileID: 0}
@@ -67,6 +67,9 @@ MonoBehaviour:
   tracerEffect: {fileID: 4853584624810719679, guid: 45fe19f4976d31d47b0e4cb97425002f,
     type: 3}
   recoil: {fileID: 1126280307063384001}
+  magazine: {fileID: 0}
+  ammoCount: 15
+  clipSize: 15
 --- !u!114 &1126280307063384001
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -83,7 +86,7 @@ MonoBehaviour:
   cameraShake: {fileID: 0}
   rigController: {fileID: 0}
   recoilPattern:
-  - {x: 0, y: 0}
+  - {x: 0, y: 10}
   duration: 0.1
 --- !u!114 &-6399145127085544378
 MonoBehaviour:
