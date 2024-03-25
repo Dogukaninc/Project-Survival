@@ -9,6 +9,7 @@ public class ReloadWeapon : MonoBehaviour
     public ActiveWeapon activeWeapon;
     public Transform leftHand;
     public AmmoWidget ammoWidget;
+    public bool isReloading;
 
     GameObject magazineHand;
 
@@ -24,6 +25,7 @@ public class ReloadWeapon : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.R) || weapon.ammoCount <= 0)
             {
+                isReloading = true;
                 rigController.SetTrigger("reload_weapon");
             }
 
@@ -81,6 +83,8 @@ public class ReloadWeapon : MonoBehaviour
 
     }
 
+    //Tabanca için ayrý bir metod oluþturulabilir
+
     void RefillMagazine()
     {
         magazineHand.SetActive(true);
@@ -95,6 +99,8 @@ public class ReloadWeapon : MonoBehaviour
         rigController.ResetTrigger("reload_weapon");//Animasyonu bir kere oynattýktan sonra bir sonraki sefer baþtan oynamasý için
 
         ammoWidget.Refresh(weapon.ammoCount);
+        isReloading = false;//Aslýnda reload'dan sonra hala ir kaç frame silah doðru konumda olmadýðý için yetersiz bir mantýk
+        //Ancak þimdilik iþ görüyor
     }
 
 

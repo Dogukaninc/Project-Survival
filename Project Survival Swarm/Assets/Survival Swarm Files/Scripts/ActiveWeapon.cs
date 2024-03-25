@@ -16,9 +16,10 @@ public class ActiveWeapon : MonoBehaviour
     public Transform[] weaponSlots;
 
     public Transform crossHairTarget;
-    public Cinemachine.CinemachineFreeLook playerCamera;
+    public CharacterAiming characterAiming;
     public AmmoWidget ammoWidget;
 
+    public bool isChangingWeapon = false;
 
     RaycastWeapon[] equipped_weapons = new RaycastWeapon[2];
     int activeWeaponIndex;
@@ -34,11 +35,21 @@ public class ActiveWeapon : MonoBehaviour
         }
     }
 
+    public bool IsFiring()//Ateþ falan ederken elimizde silah var mý yok mu onu anlamak için
+    {
+        RaycastWeapon currentWeapon = GetActiveWeapon();
+        if (!currentWeapon)
+        {
+            return false;
+        }
+        return currentWeapon.isFiring;
+    }
+
     public RaycastWeapon GetActiveWeapon()
     {
         return GetWeapon(activeWeaponIndex);
     }
-         
+
     RaycastWeapon GetWeapon(int index)
     {
         if (index < 0 || index >= equipped_weapons.Length)// Out of bounds hatasý almamak için
@@ -51,8 +62,9 @@ public class ActiveWeapon : MonoBehaviour
     void Update()
     {
         var weapon = GetWeapon(activeWeaponIndex);
-
-        if (weapon && !isHolstered) {
+        bool notSprinting = rigController.GetCurrentAnimatorStateInfo(2).shortNameHash == Animator.StringToHash("notSprinting");//Animator'un 2 indisli layer'ýndaki notSprinting'i checkliyor. notSprinting default animation state'in adý !!!
+        if (weapon && !isHolstered && notSprinting)
+        {
             weapon.UpdateWeapon(Time.deltaTime);
         }
 
@@ -88,7 +100,7 @@ public class ActiveWeapon : MonoBehaviour
 
         weapon = newWeapon;
         weapon.raycastDestination = crossHairTarget;
-        weapon.recoil.playerCam = playerCamera;
+        weapon.recoil.characterAiming = characterAiming;
         weapon.recoil.rigController = rigController;
         weapon.transform.SetParent(weaponSlots[weaponSlotIndex], false);
         equipped_weapons[weaponSlotIndex] = weapon;
@@ -126,16 +138,18 @@ public class ActiveWeapon : MonoBehaviour
 
     }
 
-    IEnumerator SwitchWeapon(int holsterIndex, int activeIndex)
+    IEnumerator SwitchWeapon(int holsterIndex, int activateIndex)
     {
+        rigController.SetInteger("weapon_index", activateIndex);
         yield return StartCoroutine(HolsterWeapon(holsterIndex));
-        yield return StartCoroutine(ActivateWeapon(activeIndex));
-        activeWeaponIndex = activeIndex;
+        yield return StartCoroutine(ActivateWeapon(activateIndex));
+        activeWeaponIndex = activateIndex;
 
     }
 
     IEnumerator HolsterWeapon(int index)
     {
+        isChangingWeapon = true;
         isHolstered = true;
         var weapon = GetWeapon(index);
         if (weapon)
@@ -146,11 +160,13 @@ public class ActiveWeapon : MonoBehaviour
                 yield return new WaitForEndOfFrame();
             } while (rigController.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f);
         }
+        isChangingWeapon = false;
 
     }
 
     IEnumerator ActivateWeapon(int index)
     {
+        isChangingWeapon = true;
         var weapon = GetWeapon(index);
         if (weapon)
         {
@@ -162,5 +178,7 @@ public class ActiveWeapon : MonoBehaviour
             } while (rigController.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f);
             isHolstered = false;
         }
+        isChangingWeapon = false;
+
     }
 }

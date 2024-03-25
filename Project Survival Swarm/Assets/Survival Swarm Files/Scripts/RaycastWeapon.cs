@@ -123,7 +123,7 @@ public class RaycastWeapon : MonoBehaviour
     private void RaycastSegment(Vector3 start, Vector3 end, Bullet bullet)
     {
         Vector3 direction = end - start;
-        float distance = (end - start).magnitude;
+        float distance = direction.magnitude;
         ray.origin = start;
         ray.direction = direction;
 
@@ -138,14 +138,28 @@ public class RaycastWeapon : MonoBehaviour
             bullet.tracer.transform.position = hitInfo.point;
             bullet.time = maxLifeTime;
 
+
+
+            //Collision Impulse
+            var rb2D = hitInfo.collider.GetComponent<Rigidbody>();
+            if (rb2D)
+            {
+                rb2D.AddForceAtPosition(ray.direction * 20, hitInfo.point, ForceMode.Impulse);
+            }
+
         }
+
+        /*
         else
         {
             bullet.tracer.transform.position = end;
-        }
+        }*/ //Önceki hali
+        bullet.tracer.transform.position = end;
+
     }
 
-    private void FireBullet() {
+    private void FireBullet()
+    {
 
         if (ammoCount <= 0) { return; }
         ammoCount--;

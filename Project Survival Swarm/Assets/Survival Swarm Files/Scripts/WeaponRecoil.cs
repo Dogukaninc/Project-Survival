@@ -6,12 +6,13 @@ using Cinemachine;
 public class WeaponRecoil : MonoBehaviour
 {
 
-    [HideInInspector] public Cinemachine.CinemachineFreeLook playerCam;
+    [HideInInspector] public CharacterAiming characterAiming; // Active Weapon içinde atamasý yapýlýyor o yüzden çalýþýyor
     [HideInInspector] public Cinemachine.CinemachineImpulseSource cameraShake;
     [HideInInspector] public Animator rigController;
 
     public Vector2[] recoilPattern;
     public float duration;
+    public float recoilModifier = 1.0f;
 
 
     float verticalRecoil;
@@ -55,8 +56,8 @@ public class WeaponRecoil : MonoBehaviour
     {
         if (time > 0)
         {
-            playerCam.m_YAxis.Value -= ((verticalRecoil / 1000) * Time.deltaTime) / duration;
-            playerCam.m_XAxis.Value -= ((horizontalRecoil / 10) * Time.deltaTime) / duration;
+            characterAiming.yAxis.Value -= (((verticalRecoil / 10) * Time.deltaTime) / duration) * recoilModifier;
+            characterAiming.xAxis.Value -= (((horizontalRecoil / 10) * Time.deltaTime) / duration) * recoilModifier;
             time -= Time.deltaTime;
 
         }

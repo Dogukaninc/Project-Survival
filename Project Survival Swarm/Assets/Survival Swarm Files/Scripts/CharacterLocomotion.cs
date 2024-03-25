@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -5,6 +6,7 @@ using UnityEngine;
 
 public class CharacterLocomotion : MonoBehaviour
 {
+    public Animator rigController;
     public float jumpHeight;
     public float gravity;
     public float stepDown;
@@ -15,18 +17,25 @@ public class CharacterLocomotion : MonoBehaviour
 
     Animator animator;
     CharacterController cc;
+    ActiveWeapon activeWeapon;
+    ReloadWeapon reloadWeapon;
+    CharacterAiming characterAiming;
     Vector2 input;
 
     Vector3 rootMotion;
     Vector3 velocity;
     bool isJumping;
 
+    int isSprintingParam = Animator.StringToHash("isSprinting");
+
     void Start()
     {
 
         animator = GetComponent<Animator>();
         cc = GetComponent<CharacterController>();
-
+        activeWeapon = GetComponent<ActiveWeapon>();
+        reloadWeapon = GetComponent<ReloadWeapon>();
+        characterAiming = GetComponent<CharacterAiming>();
         //Mouse'u baþlangýçta oyun ekranýna kitle
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
@@ -36,10 +45,32 @@ public class CharacterLocomotion : MonoBehaviour
     {
         Movement();
 
+        UpdateIsSprinting();
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Jump();
         }
+    }
+
+    bool IsSprinting()
+    {
+        bool isSprinting = Input.GetKey(KeyCode.LeftShift);
+        bool isFiring = activeWeapon.IsFiring();
+        bool isReloading = reloadWeapon.isReloading;
+        bool isChangingWeapon = activeWeapon.isChangingWeapon;
+        bool isAiming = characterAiming.isAiming;
+
+        return isSprinting && !isFiring && !isReloading && !isChangingWeapon && !isAiming;
+    }
+
+    private void UpdateIsSprinting()
+    {
+        bool isSprinting = IsSprinting();
+        animator.SetBool(isSprintingParam, isSprinting);
+        rigController.SetBool(isSprintingParam, isSprinting);
+        //Her frame de sting degeri atamasý yapmak GC da birikime neden olur
+        //Diðer bütün animasyonlar için de ayný þekilde bir parametre tanýmlayýp StringToHash yaparak optimize edebiliriz
     }
 
     private void Movement()
