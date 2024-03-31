@@ -14,6 +14,8 @@ public class RaycastWeapon : MonoBehaviour
 
     public ActiveWeapon.WeaponSlot weaponSlot;
     public bool isFiring = false;
+    public bool isMelee = false;//Yakýn dövüþ kontrolcüsü
+
     public float fireRate = 25;
     public float bulletSpeed = 1000f;
     public float bulletDrop = 0f;
@@ -69,6 +71,12 @@ public class RaycastWeapon : MonoBehaviour
         recoil.Reset();
 
     }
+
+    public void MeleeAttack()
+    {
+
+    }
+
     public void UpdateWeapon(float deltaTime)
     {
         if (Input.GetButtonDown("Fire1"))
@@ -78,6 +86,10 @@ public class RaycastWeapon : MonoBehaviour
         if (isFiring)
         {
             UpdateFiring(deltaTime);
+        }
+        if (isMelee)
+        {
+
         }
         UpdateBullets(deltaTime);
         if (Input.GetButtonUp("Fire1"))
@@ -104,6 +116,7 @@ public class RaycastWeapon : MonoBehaviour
         SimulateBullets(deltaTime);
         DestroyBullets();
     }
+
     private void SimulateBullets(float deltaTime)
     {
         bullets.ForEach(bullet =>
@@ -137,8 +150,6 @@ public class RaycastWeapon : MonoBehaviour
 
             bullet.tracer.transform.position = hitInfo.point;
             bullet.time = maxLifeTime;
-
-
 
             //Collision Impulse
             var rb2D = hitInfo.collider.GetComponent<Rigidbody>();
@@ -174,6 +185,8 @@ public class RaycastWeapon : MonoBehaviour
         bullets.Add(bullet);
 
         recoil.GenerateRecoil(weaponName);
+
+        //Buraya ya da input kýsmýna melee attack ekle
 
     }
 

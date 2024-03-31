@@ -133,6 +133,7 @@ public class CharacterLocomotion : MonoBehaviour
     {
         return ((transform.forward * input.y) + (transform.right * input.x)) * (airControl / 100);
     }
+
     void Jump()
     {
         if (!isJumping)

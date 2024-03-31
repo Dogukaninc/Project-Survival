@@ -9,7 +9,8 @@ public class ActiveWeapon : MonoBehaviour
     public enum WeaponSlot
     {
         Primary = 0,
-        Secondary = 1
+        Secondary = 1,
+        Melee = 2
     }
 
     public Animator rigController;
@@ -63,7 +64,7 @@ public class ActiveWeapon : MonoBehaviour
     {
         var weapon = GetWeapon(activeWeaponIndex);
         bool notSprinting = rigController.GetCurrentAnimatorStateInfo(2).shortNameHash == Animator.StringToHash("notSprinting");//Animator'un 2 indisli layer'ýndaki notSprinting'i checkliyor. notSprinting default animation state'in adý !!!
-        if (weapon && !isHolstered && notSprinting)
+        if (weapon && !isHolstered && notSprinting)//Silah uygnsa ateþ et
         {
             weapon.UpdateWeapon(Time.deltaTime);
         }
