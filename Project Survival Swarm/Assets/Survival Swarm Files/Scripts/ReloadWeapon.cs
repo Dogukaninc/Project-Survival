@@ -35,7 +35,6 @@ public class ReloadWeapon : MonoBehaviour
             }
         }
 
-
     }
 
     void OnAnimationEvent(string eventName)

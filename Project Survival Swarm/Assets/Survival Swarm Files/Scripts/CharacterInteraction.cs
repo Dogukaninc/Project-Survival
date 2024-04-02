@@ -2,20 +2,29 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CharacterInteraction : MonoBehaviour
 {
+    public GameObject interactionInfoPanel;
+    public TextMeshProUGUI infoText;
+
+    Camera cam;
+
     public LayerMask layerMask;
     public float sizeMultiplier;
 
     private Vector3 detectBoxSize;
     private Vector3 posOffSet = new Vector3(0, 1, 0);
 
-    private List<Collider> insideColliders = new List<Collider>();
+    Collider[] hitColliders = new Collider[10];
+
 
     private void Start()
     {
+        cam = Camera.main;
         detectBoxSize = transform.localScale / 2 * sizeMultiplier;
     }
 
@@ -23,31 +32,24 @@ public class CharacterInteraction : MonoBehaviour
     {
         FindInteractables(transform.position + posOffSet);
     }
-
+    private void LateUpdate()
+    {
+        InteractionPanelFacing();
+    }
     void FindInteractables(Vector3 center)
     {
-        int maxColliders = 10;
-        Collider[] hitColliders = new Collider[maxColliders];
+
         int numberOfColliders = Physics.OverlapBoxNonAlloc(center, detectBoxSize, hitColliders, Quaternion.identity, layerMask);
 
         if (numberOfColliders > 0)
         {
-
-            for (int i = 0; i < numberOfColliders; i++)
-            {
-                insideColliders.Add(hitColliders[i]);//Tespit edilen tum colliderları listeye ekle
-            }
-
-
             float[] distances = new float[numberOfColliders];
-
             for (int a = 0; a < numberOfColliders; a++)
             {
                 distances[a] = (transform.position - hitColliders[a].transform.position).sqrMagnitude;
             }
 
             float closestDistance = distances.Min();//Dizide en kucuk degere sahip olan elemani ariyor.
-            Debug.Log("En kisa mesafe:" + closestDistance);
 
             int closestIndex = Array.IndexOf(distances, closestDistance);
             Collider closestCollider = hitColliders[closestIndex];
@@ -55,16 +57,26 @@ public class CharacterInteraction : MonoBehaviour
             MeshRenderer c_renderer = closestCollider.GetComponent<MeshRenderer>();
             c_renderer.material.color = Color.green;
 
-            IInteractable _cInteractable = closestCollider.GetComponent<IInteractable>();
-            _cInteractable.Interact();
+            if (closestCollider.TryGetComponent<IInteractable>(out IInteractable interactble))
+            {
+                interactionInfoPanel.gameObject.SetActive(true);
+                interactionInfoPanel.transform.position = closestCollider.transform.position + new Vector3(0, 1, 0);
 
-            for (int i = 0; i < numberOfColliders; i++)//Yakin olan disindaki tum colliderlari kirmizi yapiyor.
+                InteractbleObject _Interactable = closestCollider.GetComponent<InteractbleObject>();
+                infoText.text = _Interactable.objectName + _Interactable.infoText;
+                interactble.Interact();
+            }
+
+            for (int i = 0; i < numberOfColliders; i++)//Yakin olan disindaki tum colliderlari uninteract yapiyor
             {
                 if (hitColliders[i] != closestCollider)
                 {
                     hitColliders[i].GetComponent<MeshRenderer>().material.color = Color.red;
-                    IInteractable _ıınteractble = hitColliders[i].GetComponent<IInteractable>();
-                    _ıınteractble.UnInteract();//Uzaktakilerin panelini kapat
+
+                    if (hitColliders[i].TryGetComponent(out IInteractable _interactble))
+                    {
+                        _interactble.UnInteract();
+                    }
                 }
             }
 
@@ -72,17 +84,28 @@ public class CharacterInteraction : MonoBehaviour
         }
         else
         {
-            for (int i = 0; i < insideColliders.Count; i++)
+            var _interactables = FindObjectsOfType(typeof(InteractbleObject));
+            foreach (var item in _interactables)
             {
-                insideColliders[i].GetComponent<MeshRenderer>().material.color = Color.gray;
-                IInteractable _ıınteractble = insideColliders[i].GetComponent<IInteractable>();
-                _ıınteractble.UnInteract();//Etkilesim alani disinda kalanlarin panelini kapat
+                item.GetComponent<IInteractable>().UnInteract();
             }
 
-            insideColliders.Clear();
+            foreach (var item in _interactables)
+            {
+                item.GetComponent<MeshRenderer>().material.color = Color.gray;
+            }
+
+            interactionInfoPanel.gameObject.SetActive(false);
+            interactionInfoPanel.transform.position = transform.position;
             Debug.Log("Etkilesilebilir bir obje bulunamadi!!!");
         }
 
+    }
+
+    private void InteractionPanelFacing()
+    {
+        var rotation = cam.transform.rotation;
+        interactionInfoPanel.transform.LookAt(interactionInfoPanel.transform.position + rotation * Vector3.forward, rotation * Vector3.up);
     }
 
     private void OnDrawGizmos()
@@ -91,7 +114,5 @@ public class CharacterInteraction : MonoBehaviour
         Gizmos.DrawWireCube(transform.position + posOffSet, transform.localScale * sizeMultiplier);
 
     }
-
-
 
 }

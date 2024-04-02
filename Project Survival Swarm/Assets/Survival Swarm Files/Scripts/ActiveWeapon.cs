@@ -92,7 +92,7 @@ public class ActiveWeapon : MonoBehaviour
         Debug.Log("Silah kuþandým");
         //Eger ayný türden bir silah alýyorsak elimizdekini yok etmemiz lazým. Ancak farklý türden bir silah alýyorsak elimizdeki yok olmamalý(Secondary-Primary)
 
-        int weaponSlotIndex = (int)newWeapon.weaponSlot;//PRimary ya da secondary silah seçimi için slot indexini alýyor
+        int weaponSlotIndex = (int)newWeapon.weaponSlot;//Primary ya da secondary silah seçimi için slot indexini alýyor
         var weapon = GetWeapon(weaponSlotIndex);
         if (weapon)
         {

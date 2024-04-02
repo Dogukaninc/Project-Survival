@@ -14,7 +14,6 @@ public class RaycastWeapon : MonoBehaviour
 
     public ActiveWeapon.WeaponSlot weaponSlot;
     public bool isFiring = false;
-    public bool isMelee = false;//Yakýn dövüþ kontrolcüsü
 
     public float fireRate = 25;
     public float bulletSpeed = 1000f;
@@ -23,7 +22,6 @@ public class RaycastWeapon : MonoBehaviour
     public ParticleSystem hitEffect;
     public Transform raycastOrigin;
     public Transform raycastDestination;
-    //public AnimationClip weaponAnimation;
     public string weaponName;
 
     public TrailRenderer tracerEffect;
@@ -38,13 +36,6 @@ public class RaycastWeapon : MonoBehaviour
     private float accumulatedTime;
     private List<Bullet> bullets = new List<Bullet>();
     private float maxLifeTime = 3.0f;
-
-    /*
-    private void Awake()//Awake'di
-    {
-        recoil = GetComponent<WeaponRecoil>();
-    }
-    */
 
     Vector3 GetPosition(Bullet bullet)
     {
@@ -72,11 +63,6 @@ public class RaycastWeapon : MonoBehaviour
 
     }
 
-    public void MeleeAttack()
-    {
-
-    }
-
     public void UpdateWeapon(float deltaTime)
     {
         if (Input.GetButtonDown("Fire1"))
@@ -86,10 +72,6 @@ public class RaycastWeapon : MonoBehaviour
         if (isFiring)
         {
             UpdateFiring(deltaTime);
-        }
-        if (isMelee)
-        {
-
         }
         UpdateBullets(deltaTime);
         if (Input.GetButtonUp("Fire1"))
@@ -142,8 +124,6 @@ public class RaycastWeapon : MonoBehaviour
 
         if (Physics.Raycast(ray, out hitInfo, distance))
         {
-            //Debug.DrawLine(ray.origin, hitInfo.point, Color.red, 1f);
-
             hitEffect.transform.position = hitInfo.point;
             hitEffect.transform.forward = hitInfo.normal;
             hitEffect.Emit(1);
@@ -157,14 +137,8 @@ public class RaycastWeapon : MonoBehaviour
             {
                 rb2D.AddForceAtPosition(ray.direction * 20, hitInfo.point, ForceMode.Impulse);
             }
-
         }
 
-        /*
-        else
-        {
-            bullet.tracer.transform.position = end;
-        }*/ //Önceki hali
         bullet.tracer.transform.position = end;
 
     }
@@ -185,8 +159,6 @@ public class RaycastWeapon : MonoBehaviour
         bullets.Add(bullet);
 
         recoil.GenerateRecoil(weaponName);
-
-        //Buraya ya da input kýsmýna melee attack ekle
 
     }
 
