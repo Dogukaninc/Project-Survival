@@ -135,6 +135,8 @@ Material:
     - _IsEmissive: 0
     - _IsMetallic: 1
     - _Metallic: 0
+    - _Metallic_Max: 1
+    - _Metallic_Min: 0
     - _Mode: 0
     - _Normal_Strength: 1
     - _OcclusionStrength: 1
@@ -151,7 +153,7 @@ Material:
     - _SrcBlend: 1
     - _Surface: 0
     - _UVSec: 0
-    - _Value: 1
+    - _Value: 2
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
