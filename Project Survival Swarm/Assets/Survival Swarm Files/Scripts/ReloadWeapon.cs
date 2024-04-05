@@ -20,7 +20,7 @@ public class ReloadWeapon : MonoBehaviour
 
     void Update()
     {
-        RaycastWeapon weapon = activeWeapon.GetActiveWeapon();
+        Firearm weapon = activeWeapon.GetActiveWeapon();
         if (weapon)
         {
             if (Input.GetKeyDown(KeyCode.R) || weapon.ammoCount <= 0)
@@ -67,7 +67,7 @@ public class ReloadWeapon : MonoBehaviour
 
     void DetachMagazine()
     {
-        RaycastWeapon weapon = activeWeapon.GetActiveWeapon();
+        Firearm weapon = activeWeapon.GetActiveWeapon();
         magazineHand = Instantiate(weapon.magazine, leftHand, true); //burdaki true olayýna bak ne pozisyonu bu
         weapon.magazine.SetActive(false);
 
@@ -91,7 +91,7 @@ public class ReloadWeapon : MonoBehaviour
 
     void AttachMagazine()
     {
-        RaycastWeapon weapon = activeWeapon.GetActiveWeapon();
+        Firearm weapon = activeWeapon.GetActiveWeapon();
         weapon.magazine.SetActive(true);
         Destroy(magazineHand);
         weapon.ammoCount = weapon.clipSize;

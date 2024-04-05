@@ -13,8 +13,14 @@ public class WeaponAnimationEvents : MonoBehaviour
 {
 
     public AnimationEvent WeaponAnimationEvent = new AnimationEvent();
+    public AnimationEvent MeleeAnimationEvent = new AnimationEvent();
     public void OnAnimationEvent(string eventName)
     {
         WeaponAnimationEvent.Invoke(eventName);
+    }
+
+    public void OnMeleeAnimationEvent(string eventName)
+    {
+        MeleeAnimationEvent.Invoke(eventName);
     }
 }

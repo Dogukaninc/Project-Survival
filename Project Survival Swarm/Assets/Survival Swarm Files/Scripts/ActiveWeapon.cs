@@ -22,36 +22,43 @@ public class ActiveWeapon : MonoBehaviour
 
     public bool isChangingWeapon = false;
 
-    RaycastWeapon[] equipped_weapons = new RaycastWeapon[2];
+    Firearm[] equipped_weapons = new Firearm[2];
+    MeleeWeapon[] equipped_melees = new MeleeWeapon[3];
+
     int activeWeaponIndex;
 
     bool isHolstered = false;
 
     void Start()
     {
-        RaycastWeapon existingWeapon = GetComponentInChildren<RaycastWeapon>();
-        if (existingWeapon)
+        Firearm existingWeapon = GetComponentInChildren<Firearm>();
+        MeleeWeapon existingMelee = GetComponentInChildren<MeleeWeapon>();
+        if (existingWeapon || existingMelee)
         {
-            Equip(existingWeapon);
+            Equip(existingWeapon, existingMelee);
         }
     }
 
     public bool IsFiring()//Ateþ falan ederken elimizde silah var mý yok mu onu anlamak için
     {
-        RaycastWeapon currentWeapon = GetActiveWeapon();
+        Firearm currentWeapon = GetActiveWeapon();
         if (!currentWeapon)
         {
             return false;
         }
-        return currentWeapon.isFiring;
+        return currentWeapon.isFiring;//Eldeki silah varsa ates etmesini true donduruyor
     }
 
-    public RaycastWeapon GetActiveWeapon()
+    public MeleeWeapon GetActiveMelee()
     {
-        return GetWeapon(activeWeaponIndex);
+        return GetMelee(activeWeaponIndex);
+    }
+    public Firearm GetActiveWeapon()
+    {
+        return GetFirearm(activeWeaponIndex);
     }
 
-    RaycastWeapon GetWeapon(int index)
+    Firearm GetFirearm(int index)
     {
         if (index < 0 || index >= equipped_weapons.Length)// Out of bounds hatasý almamak için
         {
@@ -60,13 +67,29 @@ public class ActiveWeapon : MonoBehaviour
         return equipped_weapons[index];
     }
 
+    MeleeWeapon GetMelee(int index)
+    {
+        if (index < 0 || index >= equipped_melees.Length)
+        {
+            return null;
+        }
+        return equipped_melees[index];
+    }
+
     void Update()
     {
-        var weapon = GetWeapon(activeWeaponIndex);
+        var weapon = GetFirearm(activeWeaponIndex);
+        var melee = GetMelee(activeWeaponIndex);
         bool notSprinting = rigController.GetCurrentAnimatorStateInfo(2).shortNameHash == Animator.StringToHash("notSprinting");//Animator'un 2 indisli layer'ýndaki notSprinting'i checkliyor. notSprinting default animation state'in adý !!!
-        if (weapon && !isHolstered && notSprinting)//Silah uygnsa ateþ et
+
+        //Buraya atesli silahsa ates et, eger melee ise savur mantigi ekle
+        if (weapon && !isHolstered && notSprinting && !melee)//Silah uygnsa ateþ et
         {
             weapon.UpdateWeapon(Time.deltaTime);
+        }
+        else if (!weapon && !isHolstered && notSprinting && melee)
+        {
+            melee.SwingMelee();
         }
 
         //Silahý kýnýna koy
@@ -83,32 +106,57 @@ public class ActiveWeapon : MonoBehaviour
         {
             SetActiveWeapon(WeaponSlot.Secondary);
         }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            SetActiveWeapon(WeaponSlot.Melee);
+        }
 
     }
 
-    public void Equip(RaycastWeapon newWeapon)
+    public void Equip(Firearm newFirearm, MeleeWeapon newMelee)
     {
-
-        Debug.Log("Silah kuþandým");
+        //Burada eðer alýnan silah firearm ise firearm deðilse melee olacak þelilde alýnanýn türüne bakýcaz
+        Debug.Log($"Kusandigim Silah:");
         //Eger ayný türden bir silah alýyorsak elimizdekini yok etmemiz lazým. Ancak farklý türden bir silah alýyorsak elimizdeki yok olmamalý(Secondary-Primary)
-
-        int weaponSlotIndex = (int)newWeapon.weaponSlot;//Primary ya da secondary silah seçimi için slot indexini alýyor
-        var weapon = GetWeapon(weaponSlotIndex);
-        if (weapon)
+        if (newFirearm != null)
         {
-            Destroy(weapon.gameObject);
+            int weaponSlotIndex = (int)newFirearm.weaponSlot;//Primary ya da secondary silah seçimi için slot indexini alýyor
+            var weapon = GetFirearm(weaponSlotIndex);
+            if (weapon)
+            {
+                Destroy(weapon.gameObject);
+            }
+
+            weapon = newFirearm;
+            weapon.raycastDestination = crossHairTarget;
+            weapon.recoil.characterAiming = characterAiming;
+            weapon.recoil.rigController = rigController;
+            weapon.transform.SetParent(weaponSlots[weaponSlotIndex], false);//Silahý nereye parentlayýp kuþanacak onu seciyor
+            equipped_weapons[weaponSlotIndex] = weapon;
+
+            SetActiveWeapon(newFirearm.weaponSlot);
+
+            ammoWidget.Refresh(weapon.ammoCount);
         }
 
-        weapon = newWeapon;
-        weapon.raycastDestination = crossHairTarget;
-        weapon.recoil.characterAiming = characterAiming;
-        weapon.recoil.rigController = rigController;
-        weapon.transform.SetParent(weaponSlots[weaponSlotIndex], false);
-        equipped_weapons[weaponSlotIndex] = weapon;
+        if (newMelee != null)
+        {
+            int meleeSlotIndex = (int)newMelee.meleeSlot;
+            var melee = GetMelee(meleeSlotIndex);
+            if (melee)
+            {
+                Destroy(melee.gameObject);
+            }
+            melee = newMelee;
+            //melee.raycastDestination = crossHairTarget;
+            //melee.recoil.characterAiming = characterAiming;
+            melee.rigController = rigController;
+            melee.transform.SetParent(weaponSlots[meleeSlotIndex], false);//Silahý nereye parentlayýp kuþanacak onu seciyor
+            equipped_melees[meleeSlotIndex] = melee;
 
-        SetActiveWeapon(newWeapon.weaponSlot);
-
-        ammoWidget.Refresh(weapon.ammoCount);
+            SetActiveWeapon(melee.meleeSlot);
+            //ammoWidget.Refresh(weapon.ammoCount); Mermi miktarýný gösteren ikon sonsuz sembolü olacak
+        }
 
     }
 
@@ -136,7 +184,6 @@ public class ActiveWeapon : MonoBehaviour
         }
 
         StartCoroutine(SwitchWeapon(holsterIndex, activateIndex));
-
     }
 
     IEnumerator SwitchWeapon(int holsterIndex, int activateIndex)
@@ -152,8 +199,9 @@ public class ActiveWeapon : MonoBehaviour
     {
         isChangingWeapon = true;
         isHolstered = true;
-        var weapon = GetWeapon(index);
-        if (weapon)
+        var weapon = GetFirearm(index);
+        var melee = GetMelee(index);
+        if (weapon && !melee)
         {
             rigController.SetBool("holster_weapon", true);
             do
@@ -161,6 +209,15 @@ public class ActiveWeapon : MonoBehaviour
                 yield return new WaitForEndOfFrame();
             } while (rigController.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f);
         }
+        else if (!weapon && melee)
+        {
+            rigController.SetBool("holster_weapon", true);
+            do
+            {
+                yield return new WaitForEndOfFrame();
+            } while (rigController.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f);
+        }
+
         isChangingWeapon = false;
 
     }
@@ -168,8 +225,10 @@ public class ActiveWeapon : MonoBehaviour
     IEnumerator ActivateWeapon(int index)
     {
         isChangingWeapon = true;
-        var weapon = GetWeapon(index);
-        if (weapon)
+        var weapon = GetFirearm(index);
+        var melee = GetMelee(index);
+
+        if (weapon && !melee)
         {
             rigController.SetBool("holster_weapon", false);
             rigController.Play("equip_" + weapon.weaponName);
@@ -179,6 +238,18 @@ public class ActiveWeapon : MonoBehaviour
             } while (rigController.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f);
             isHolstered = false;
         }
+        else if (melee && !weapon)
+        {
+            rigController.SetBool("holster_weapon", false);
+            rigController.Play("equip_" + melee.meleeName);
+            do
+            {
+                yield return new WaitForEndOfFrame();
+            } while (rigController.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f);
+            isHolstered = false;
+        }
+
+
         isChangingWeapon = false;
 
     }
