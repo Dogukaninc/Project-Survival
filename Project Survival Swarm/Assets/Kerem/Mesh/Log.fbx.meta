@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 97cfb64bc4a05ab4488083ecbbf3f29a
+guid: f1bfd1f4617ed0c4d9c4d507b81cb1a2
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
@@ -7,13 +7,8 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: GunShopParts
-    second: {fileID: 2100000, guid: a2373a50835a6d4429a36fe74978d268, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: GunShopWalls
-    second: {fileID: 2100000, guid: 974e265426b00784aafde85c537c9ccd, type: 2}
+      name: Log
+    second: {fileID: 2100000, guid: e0b401632447c76419640a63e5f3ff9c, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -57,7 +52,7 @@ ModelImporter:
     nodeNameCollisionStrategy: 1
     fileIdsGeneration: 2
     swapUVChannels: 0
-    generateSecondaryUV: 1
+    generateSecondaryUV: 0
     useFileUnits: 1
     keepQuads: 0
     weldVertices: 1
