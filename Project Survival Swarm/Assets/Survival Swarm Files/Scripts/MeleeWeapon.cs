@@ -4,11 +4,8 @@ using UnityEngine;
 
 public class MeleeWeapon : MonoBehaviour
 {
-
-    // Sol týka bir kere basýnca yakýn dövüþ animasyonunu oynatacak
-    // x'e basýnca baltayý beline koyacak
-    // Bir vurma animasyonu bitmeden bir sonraki sol týk'ý algýlamayacak yani yakýn dövüþ animasyonu spamlanamayacak
-    // Hasar verme ya animation event ile ya da ontrigger ile yapýlacak
+    public enum MeleeType { axe, pickaxe, combat }
+    [SerializeField] private MeleeType meleeType;
 
     public ActiveWeapon.WeaponSlot meleeSlot;
 
@@ -17,12 +14,6 @@ public class MeleeWeapon : MonoBehaviour
     public string meleeName;
 
     [HideInInspector] public Animator rigController;
-    //public Transform raycastDestination;
-
-    //private float nextHitTime;
-
-    //Ray ray;
-    //RaycastHit hitInfo;
 
     public Transform damageCenter;
     public LayerMask damagableLayer;
@@ -34,11 +25,6 @@ public class MeleeWeapon : MonoBehaviour
     {
         //Rig controller'ý equip de atadým
         canSwing = true;
-
-    }
-
-    private void Update()
-    {
 
     }
 
@@ -55,8 +41,12 @@ public class MeleeWeapon : MonoBehaviour
         }
     }
 
-    public void GiveDamage(float damage)//Animation Event
+
+    //todo Give damage yerine health.cs in içine TakeDamage fonsksiyonu oluþtur. Böylece her sýnýf için ayrý bir give damage olusturmayýz
+    //todo Kaynak toplamak icin bir metod olusturup bu metodu kaynak toplama aracýna göre sekillendirebiliriz
+    public void GiveDamage(float damage) //Animation Event
     {
+
         int numberOfColliders = Physics.OverlapSphereNonAlloc(damageCenter.position, damageRadius, hitColliders, damagableLayer);
         if (numberOfColliders > 0)
         {
@@ -66,8 +56,30 @@ public class MeleeWeapon : MonoBehaviour
                 {
                     if (hitColliders[i].TryGetComponent(out Health health))
                     {
-                        Debug.Log("Give Damage Çalýþtý");
-                        health.currentHealth -= damage;
+                        if (hitColliders[i].CompareTag("Tree") && meleeType == MeleeType.axe)
+                        {
+                            ResourceHandler.Instance.wood += 10;
+                            ResourceHandler.Instance.updateResourcesAction.Invoke();
+                            
+                            Debug.Log("Give Damage Çalýþtý");
+                            health.currentHealth -= damage;
+                        }
+                        else if (hitColliders[i].CompareTag("ScrapMetal") && meleeType == MeleeType.pickaxe)
+                        {
+                            ResourceHandler.Instance.scrap_metal += 10;
+                            ResourceHandler.Instance.updateResourcesAction.Invoke();
+
+                            Debug.Log("Give Damage Çalýþtý");
+                            health.currentHealth -= damage;
+                        }
+                        else if (hitColliders[i].CompareTag("Stone") && meleeType == MeleeType.pickaxe)
+                        {
+                            ResourceHandler.Instance.stone += 10;
+                            ResourceHandler.Instance.updateResourcesAction.Invoke();
+
+                            Debug.Log("Give Damage Çalýþtý");
+                            health.currentHealth -= damage;
+                        }
                     }
                 }
             }
@@ -82,10 +94,10 @@ public class MeleeWeapon : MonoBehaviour
     }
 
 
-    //private void OnDrawGizmos()
-    //{
-    //    Gizmos.color = Color.red;
-    //    Gizmos.DrawWireCube(transform.position + posOffSet, transform.localScale * sizeMultiplier);
-    //}
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(damageCenter.position, damageRadius);
+    }
 
 }

@@ -131,6 +131,7 @@ public class Firearm : MonoBehaviour
             bullet.tracer.transform.position = hitInfo.point;
             bullet.time = maxLifeTime;
 
+            //todo Hasar verme mantýðý burada kurulacak, her silah kendi hasar oranlarýan sahip olacak
             //Collision Impulse
             var rb2D = hitInfo.collider.GetComponent<Rigidbody>();
             if (rb2D)

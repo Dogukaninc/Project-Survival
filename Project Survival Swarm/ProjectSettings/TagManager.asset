@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Firearm
   - Melee
+  - Tree
+  - ScrapMetal
+  - Stone
   layers:
   - Default
   - TransparentFX
