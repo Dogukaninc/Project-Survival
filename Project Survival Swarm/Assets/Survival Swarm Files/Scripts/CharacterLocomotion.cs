@@ -28,21 +28,6 @@ public class CharacterLocomotion : MonoBehaviour
 
     int isSprintingParam = Animator.StringToHash("isSprinting");
 
-    private void Awake()
-    {
-        GameStateHandler.Instance.onGameContinue += SetContinueGameAnimation;
-        GameStateHandler.Instance.onGamePause += SetPauseGameAnimation;
-        GameStateHandler.Instance.onGamePause += () => this.enabled = false;
-        GameStateHandler.Instance.onGameContinue += () => this.enabled = true;
-    }
-    private void OnDestroy()
-    {
-        GameStateHandler.Instance.onGameContinue -= SetContinueGameAnimation;
-        GameStateHandler.Instance.onGamePause -= SetPauseGameAnimation;
-        GameStateHandler.Instance.onGamePause -= () => this.enabled = false;
-        GameStateHandler.Instance.onGameContinue -= () => this.enabled = true;
-    }
-
     void Start()
     {
 
@@ -189,17 +174,6 @@ public class CharacterLocomotion : MonoBehaviour
 
         // Apply the push
         body.velocity = pushDir * pushPower;
-    }
-
-
-    //Oyuncu etkileþime girdiðinde bu animasyonlar çalýþacak
-    private void SetPauseGameAnimation()
-    {
-        animator.SetLayerWeight(2, 1);
-    }
-    private void SetContinueGameAnimation()
-    {
-        animator.SetLayerWeight(2, 0);
     }
 
 }

@@ -12,18 +12,6 @@ public class ReloadWeapon : MonoBehaviour
     public bool isReloading;
 
     GameObject magazineHand;
-    private void OnEnable()
-    {
-        GameStateHandler.Instance.onGamePause += () => this.enabled = false;
-        GameStateHandler.Instance.onGameContinue += () => this.enabled = true;
-
-    }
-    private void OnDisable()
-    {
-        GameStateHandler.Instance.onGamePause -= () => this.enabled = false;
-        GameStateHandler.Instance.onGameContinue -= () => this.enabled = true;
-
-    }
 
     void Start()
     {
@@ -94,7 +82,7 @@ public class ReloadWeapon : MonoBehaviour
 
     }
 
-    //Tabanca için ayrý bir metod oluþturulabilir--> Neden ? çünkü animasyonda çeþitliliðe gitmek istediðimde zorlanýyorum
+    //Tabanca için ayrý bir metod oluþturulabilir
 
     void RefillMagazine()
     {

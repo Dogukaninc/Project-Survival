@@ -59,7 +59,7 @@ public class MeleeWeapon : MonoBehaviour
                         if (hitColliders[i].CompareTag("Tree") && meleeType == MeleeType.axe)
                         {
                             ResourceHandler.Instance.wood += 10;
-                            ResourceHandler.Instance.updateResourcesAction?.Invoke();
+                            ResourceHandler.Instance.updateResourcesAction.Invoke();
                             
                             Debug.Log("Give Damage Çalýþtý");
                             health.currentHealth -= damage;
@@ -67,7 +67,7 @@ public class MeleeWeapon : MonoBehaviour
                         else if (hitColliders[i].CompareTag("ScrapMetal") && meleeType == MeleeType.pickaxe)
                         {
                             ResourceHandler.Instance.scrap_metal += 10;
-                            ResourceHandler.Instance.updateResourcesAction?.Invoke();
+                            ResourceHandler.Instance.updateResourcesAction.Invoke();
 
                             Debug.Log("Give Damage Çalýþtý");
                             health.currentHealth -= damage;
@@ -75,7 +75,7 @@ public class MeleeWeapon : MonoBehaviour
                         else if (hitColliders[i].CompareTag("Stone") && meleeType == MeleeType.pickaxe)
                         {
                             ResourceHandler.Instance.stone += 10;
-                            ResourceHandler.Instance.updateResourcesAction?.Invoke();
+                            ResourceHandler.Instance.updateResourcesAction.Invoke();
 
                             Debug.Log("Give Damage Çalýþtý");
                             health.currentHealth -= damage;
