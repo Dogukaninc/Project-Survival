@@ -28,7 +28,18 @@ public class ActiveWeapon : MonoBehaviour
     int activeWeaponIndex;
 
     bool isHolstered = false;
+    private void OnEnable()
+    {
+        GameStateHandler.Instance.onGamePause += () => this.enabled = false;
+        GameStateHandler.Instance.onGameContinue += () => this.enabled = true;
 
+    }
+    private void OnDisable()
+    {
+        GameStateHandler.Instance.onGamePause -= () => this.enabled = false;
+        GameStateHandler.Instance.onGameContinue -= () => this.enabled = true;
+
+    }
     void Start()
     {
         Firearm existingWeapon = GetComponentInChildren<Firearm>();

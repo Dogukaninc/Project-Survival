@@ -1,48 +1,39 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class GameStateHandler : MonoBehaviour
+public class GameStateHandler : MonoSingleton<GameStateHandler>
 {
 
     public GameObject player;
 
-    public static GameStateHandler instance;
-    private void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            Destroy(instance);
-        } 
-    }
+    public delegate void OnGamePause();
+    public event OnGamePause onGamePause;
 
+    public delegate void OnGameContinue();
+    public event OnGameContinue onGameContinue;
+
+    /// <summary>
+    ///  Works when player just interact with some other objects. Not the actual Pause Game
+    /// </summary>
+    /// <returns> OnGamePuse,OnGameContinue,etc.. Methods</returns>
     public void PauseGame()
     {
-        player.GetComponent<CharacterAiming>().enabled = false;
-        player.GetComponent<CharacterLocomotion>().enabled = false;
-        player.GetComponent<ActiveWeapon>().enabled = false;
-        player.GetComponent<ReloadWeapon>().enabled = false;
+        //TODO: oyun pause edildiðinde oyuncuyu pause edilme animasyonuna sok--> mesela idle veya static bir idle hal
+        
         //player.GetComponent<Animator>().enabled = false;
+
+        onGamePause?.Invoke();
 
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
-
     }
 
     public void ContinueGame()
     {
-        player.GetComponent<CharacterAiming>().enabled = true;
-        player.GetComponent<CharacterLocomotion>().enabled = true;
-        player.GetComponent<ActiveWeapon>().enabled = true;
-        player.GetComponent<ReloadWeapon>().enabled = true;
-        //player.GetComponent<Animator>().enabled = true;
+        onGameContinue?.Invoke();
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
+
 
 }

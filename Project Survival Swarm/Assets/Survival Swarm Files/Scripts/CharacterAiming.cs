@@ -20,6 +20,16 @@ public class CharacterAiming : MonoBehaviour
 
     int isAimingParam = Animator.StringToHash("isAiming");
 
+    private void OnEnable()
+    {
+        GameStateHandler.Instance.onGamePause += () => this.enabled = false;
+        GameStateHandler.Instance.onGameContinue += () => this.enabled = true;
+    }
+    private void OnDisable()
+    {
+        GameStateHandler.Instance.onGamePause -= () => this.enabled = false;
+        GameStateHandler.Instance.onGameContinue -= () => this.enabled = true;
+    }
 
     void Start()
     {
