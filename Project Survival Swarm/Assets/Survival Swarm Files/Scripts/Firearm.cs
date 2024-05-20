@@ -15,6 +15,7 @@ public class Firearm : MonoBehaviour
     }
 
     [SerializeField] private FirearmSO firearmSO;
+    private DamagePopUp damagePopUp;
 
     public ActiveWeapon.WeaponSlot weaponSlot;
     public bool isFiring = false;
@@ -45,6 +46,8 @@ public class Firearm : MonoBehaviour
 
     private void Start()
     {
+        damagePopUp = FindObjectOfType<DamagePopUp>();
+
         fireRate = firearmSO.fireRate;
         bulletSpeed = firearmSO.bulletSpeed;
         damagePower = firearmSO.damagePower;
@@ -158,8 +161,11 @@ public class Firearm : MonoBehaviour
                 if (hitInfo.transform.TryGetComponent(out Enemy enemy))
                 {
                     HittingTarget(enemy.gameObject);
+                    var randomizePos = new Vector3(UnityEngine.Random.Range(.5f, 3f), UnityEngine.Random.Range(.5f, 1f),
+                        UnityEngine.Random.Range(.5f, 1f));
+                    
+                    damagePopUp.DamagePopUpEffect(damagePower, enemy.transform.position + randomizePos);
                 }
-                
             }
         }
 
