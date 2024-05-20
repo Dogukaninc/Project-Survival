@@ -24,7 +24,7 @@ Material:
   m_Shader: {fileID: -6465566751694194690, guid: 9920c1f1781549a46ba081a2a15a16ec,
     type: 3}
   m_ValidKeywords:
-  - BACKFACE_NORMAL_MODE_NONE
+  - BACKFACE_NORMAL_MODE_MIRROR
   - _WINDQUALITY_BEST
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -36,14 +36,6 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _AO:
-        m_Texture: {fileID: 2800000, guid: cf141694bfc67e647ab581dc0064f9c0, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _BaseColor:
-        m_Texture: {fileID: 2800000, guid: cc4de0c8df6a2244aaa657e535c6daeb, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _BaseMap:
         m_Texture: {fileID: 2800000, guid: cc4de0c8df6a2244aaa657e535c6daeb, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -77,7 +69,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ExtraTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: cf141694bfc67e647ab581dc0064f9c0, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -102,10 +94,6 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Normal:
-        m_Texture: {fileID: 2800000, guid: 035cd0a19a21dcc4f94ea25e55f3c845, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Normal0:
@@ -174,11 +162,11 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - BACKFACE_NORMAL_MODE: 2
+    - BACKFACE_NORMAL_MODE: 1
     - EFFECT_BILLBOARD: 0
     - EFFECT_EXTRA_TEX: 0
     - _AlphaClip: 0
-    - _AlphaClipThreshold: 0.581
+    - _AlphaClipThreshold: 0.33
     - _BillboardKwToggle: 0
     - _BillboardShadowFade: 0.5
     - _Blend: 0
@@ -186,12 +174,11 @@ Material:
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
-    - _Cull: 2
+    - _Cull: 0
     - _Cutoff: 0
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 10
-    - _EmisStrength: 0
     - _EnableHeightBlend: 0
     - _EnableInstancedPerPixelNormal: 1
     - _EnvironmentReflections: 1
@@ -200,7 +187,6 @@ Material:
     - _GlossinessSource: 0
     - _GlossyReflections: 1
     - _HeightTransition: 0
-    - _Hue: 0
     - _HueVariationKwToggle: 1
     - _Metallic: 0.264
     - _Metallic0: 0
@@ -217,7 +203,6 @@ Material:
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _SampleGI: 0
-    - _Saturation: 1
     - _Shininess: 0
     - _Smoothness: 0
     - _Smoothness0: 0.5
@@ -234,14 +219,13 @@ Material:
     - _Surface: 1
     - _TwoSided: 0
     - _UVSec: 0
-    - _Value: 5
     - _WINDQUALITY: 4
-    - _WindQuality: 1
+    - _WindQuality: 0
     - _WorkflowMode: 1
     - _ZWrite: 0
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.8584906, g: 0.8584906, b: 0.8584906, a: 1}
     - _EmissionColor: {r: 0.05490196, g: 0.3882353, b: 0, a: 0}
     - _HueVariation: {r: 1, g: 0.5, b: 0, a: 0.1}
     - _HueVariationColor: {r: 1, g: 0.45290953, b: 0, a: 0.30588236}

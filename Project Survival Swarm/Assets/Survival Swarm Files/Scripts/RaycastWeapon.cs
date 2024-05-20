@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class RaycastWeapon : MonoBehaviour
 {
@@ -25,8 +27,6 @@ public class RaycastWeapon : MonoBehaviour
     public string weaponName;
 
     public TrailRenderer tracerEffect;
-    public WeaponRecoil recoil;
-
 
     Ray ray;
     RaycastHit hitInfo;
@@ -34,10 +34,7 @@ public class RaycastWeapon : MonoBehaviour
     private List<Bullet> bullets = new List<Bullet>();
     private float maxLifeTime = 3.0f;
 
-    private void Awake()
-    {
-        recoil = GetComponent<WeaponRecoil>();
-    }
+    public float damage = 10f;
 
     Vector3 GetPosition(Bullet bullet)
     {
@@ -61,12 +58,9 @@ public class RaycastWeapon : MonoBehaviour
     {
         isFiring = true;
         accumulatedTime = 0.0f;
-        recoil.Reset();
+        FireBullet();
 
     }
-
-    //Elemanda burda UpdateFiring var
-
     public void UpdateFiring(float deltaTime)
     {
         accumulatedTime += deltaTime;
@@ -103,32 +97,58 @@ public class RaycastWeapon : MonoBehaviour
 
     private void DestroyBullets()
     {
-        bullets.RemoveAll(bullet => bullet.time >= maxLifeTime);
+        bullets.RemoveAll(bullet =>
+        {
+            if (bullet.time >= maxLifeTime)
+            {
+                if (bullet.tracer != null)
+                {
+                    Destroy(bullet.tracer.gameObject);
+                }
+                return true;
+            }
+            return false;
+        });
     }
 
-    private void RaycastSegment(Vector3 start, Vector3 end, Bullet bullet)
+    void RaycastSegment(Vector3 start, Vector3 end, Bullet bullet)
     {
         Vector3 direction = end - start;
-        float distance = (end - start).magnitude;
+        float distance = direction.magnitude;
         ray.origin = start;
         ray.direction = direction;
 
+        Color debugColor = Color.green;
+
         if (Physics.Raycast(ray, out hitInfo, distance))
         {
-            //Debug.DrawLine(ray.origin, hitInfo.point, Color.red, 1f);
-
             hitEffect.transform.position = hitInfo.point;
             hitEffect.transform.forward = hitInfo.normal;
             hitEffect.Emit(1);
 
-            bullet.tracer.transform.position = hitInfo.point;
             bullet.time = maxLifeTime;
+            end = hitInfo.point;
+            debugColor = Color.red;
 
+
+            var rb2 = hitInfo.collider.GetComponent<Rigidbody>();
+            if (rb2)
+            {
+                rb2.AddForceAtPosition(ray.direction * 20, hitInfo.point, ForceMode.Impulse);
+            }
+
+            var hitBox = hitInfo.collider.GetComponent<HitBox>();
+            if (hitBox)
+            {
+                hitBox.RaycastHit(this, ray.direction);
+            }
         }
-        else
+
+        if (bullet.tracer != null)
         {
             bullet.tracer.transform.position = end;
         }
+
     }
 
     private void FireBullet()
@@ -141,8 +161,6 @@ public class RaycastWeapon : MonoBehaviour
         Vector3 velocity = (raycastDestination.position - raycastOrigin.position).normalized * bulletSpeed;
         var bullet = CreateBullet(raycastOrigin.position, velocity);
         bullets.Add(bullet);
-
-        recoil.GenerateRecoil(weaponName);
 
         /*
         ray.origin = raycastOrigin.position;
