@@ -9,6 +9,7 @@ TagManager:
   - Tree
   - ScrapMetal
   - Stone
+  - Obstacle
   layers:
   - Default
   - TransparentFX
@@ -20,8 +21,8 @@ TagManager:
   - Melee
   - Player
   - Damageble
-  - 
-  - 
+  - ground
+  - Obstacle
   - 
   - 
   - 
