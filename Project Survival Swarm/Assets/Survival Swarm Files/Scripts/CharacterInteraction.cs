@@ -8,12 +8,12 @@ public class CharacterInteraction : MonoBehaviour
 {
     public GameObject interactionInfoPanel;
     public TextMeshProUGUI infoText;
-
+    
     Camera cam;
-
+    
     public LayerMask layerMask;
     public float sizeMultiplier;
-
+    
     private Vector3 detectBoxSize;
     private Vector3 posOffSet = new Vector3(0, 1, 0);
 
@@ -48,9 +48,9 @@ public class CharacterInteraction : MonoBehaviour
             {
                 distances[a] = (transform.position - hitColliders[a].transform.position).sqrMagnitude;
             }
-
+            
             float closestDistance = distances.Min();//Dizide en kucuk degere sahip olan elemani ariyor.
-
+            
             int closestIndex = Array.IndexOf(distances, closestDistance);
             Collider closestCollider = hitColliders[closestIndex];
 
@@ -99,9 +99,9 @@ public class CharacterInteraction : MonoBehaviour
             interactionInfoPanel.transform.position = transform.position;
             Debug.Log("Etkilesilebilir bir obje bulunamadi!!!");
         }
-
+    
     }
-
+    
     private void InteractionPanelFacing()
     {
         var rotation = cam.transform.rotation;
@@ -112,7 +112,7 @@ public class CharacterInteraction : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(transform.position + posOffSet, transform.localScale * sizeMultiplier);
-
+        
     }
 
 }

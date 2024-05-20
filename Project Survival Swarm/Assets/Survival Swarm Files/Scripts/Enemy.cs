@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour, IDamagable
 {
@@ -14,13 +13,18 @@ public class Enemy : MonoBehaviour, IDamagable
     
     [Space(10)]
     private Animator animator;
-    
+
+    private NavMeshAgent _navMeshAgent;
+    private Health _health;
     void Start()
     {
+        _navMeshAgent = GetComponent<NavMeshAgent>();
+        _health = GetComponent<Health>();
+        
         movementSpeed = EnemySO.speed;
         damagePower = EnemySO.power;
     }
-
+    
     void Update()
     {
         
@@ -28,6 +32,7 @@ public class Enemy : MonoBehaviour, IDamagable
 
     public void TakeDamage(int damagePoint)
     {
-        throw new System.NotImplementedException();
+        _health.currentHealth -= damagePoint;
+        //TODO: Damage popup burda çalışacak
     }
 }

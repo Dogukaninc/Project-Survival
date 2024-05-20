@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Survival_Swarm_Files.Scripts.Scriptables;
 using UnityEngine;
 
 public class Firearm : MonoBehaviour
@@ -12,11 +14,11 @@ public class Firearm : MonoBehaviour
         public TrailRenderer tracer;
     }
 
+    [SerializeField] private FirearmSO firearmSO;
+
     public ActiveWeapon.WeaponSlot weaponSlot;
     public bool isFiring = false;
 
-    public float fireRate = 25;
-    public float bulletSpeed = 1000f;
     public float bulletDrop = 0f;
     public ParticleSystem[] muzzleFlash;
     public ParticleSystem hitEffect;
@@ -37,11 +39,23 @@ public class Firearm : MonoBehaviour
     private List<Bullet> bullets = new List<Bullet>();
     private float maxLifeTime = 3.0f;
 
+    [Header(" Firearm Properties ")] private float fireRate; //25
+    private float bulletSpeed; //1000
+    private int damagePower;
+
+    private void Start()
+    {
+        fireRate = firearmSO.fireRate;
+        bulletSpeed = firearmSO.bulletSpeed;
+        damagePower = firearmSO.damagePower;
+    }
+
     Vector3 GetPosition(Bullet bullet)
     {
         // p + v*t + 0.5*g*t*t
         Vector3 gravity = Vector3.down * bulletDrop;
-        return (bullet.initialPosition) + (bullet.initialVelocity * bullet.time) + (0.5f * gravity * bullet.time * bullet.time);
+        return (bullet.initialPosition) + (bullet.initialVelocity * bullet.time) +
+               (0.5f * gravity * bullet.time * bullet.time);
     }
 
     Bullet CreateBullet(Vector3 position, Vector3 velocity)
@@ -60,7 +74,6 @@ public class Firearm : MonoBehaviour
         isFiring = true;
         accumulatedTime = 0.0f;
         recoil.Reset();
-
     }
 
     public void UpdateWeapon(float deltaTime)
@@ -69,16 +82,17 @@ public class Firearm : MonoBehaviour
         {
             StartFiring();
         }
+
         if (isFiring)
         {
             UpdateFiring(deltaTime);
         }
+
         UpdateBullets(deltaTime);
         if (Input.GetMouseButtonUp(0))
         {
             StopFiring();
         }
-
     }
 
     public void UpdateFiring(float deltaTime)
@@ -131,23 +145,43 @@ public class Firearm : MonoBehaviour
             bullet.tracer.transform.position = hitInfo.point;
             bullet.time = maxLifeTime;
 
-            //todo Hasar verme mantýðý burada kurulacak, her silah kendi hasar oranlarýan sahip olacak
-            //Collision Impulse
-            var rb2D = hitInfo.collider.GetComponent<Rigidbody>();
-            if (rb2D)
+            if (hitInfo.collider.CompareTag("DynamicProp"))
             {
-                rb2D.AddForceAtPosition(ray.direction * 20, hitInfo.point, ForceMode.Impulse);
+                var rb2D = hitInfo.collider.GetComponent<Rigidbody>();
+                if (rb2D)
+                {
+                    rb2D.AddForceAtPosition(ray.direction * 20, hitInfo.point, ForceMode.Impulse);
+                }
+            }
+            else if (hitInfo.collider.CompareTag("Enemy"))
+            {
+                if (hitInfo.transform.TryGetComponent(out Enemy enemy))
+                {
+                    HittingTarget(enemy.gameObject);
+                }
+                
             }
         }
 
         bullet.tracer.transform.position = end;
-
     }
+
+    private void HittingTarget(GameObject damagable)
+    {
+        if (damagable.TryGetComponent(out IDamagable iDamagable))
+        {
+            iDamagable.TakeDamage(damagePower);
+        }
+    }
+
 
     private void FireBullet()
     {
+        if (ammoCount <= 0)
+        {
+            return;
+        }
 
-        if (ammoCount <= 0) { return; }
         ammoCount--;
 
         foreach (var particle in muzzleFlash)
@@ -160,13 +194,10 @@ public class Firearm : MonoBehaviour
         bullets.Add(bullet);
 
         recoil.GenerateRecoil(weaponName);
-
     }
 
     public void StopFiring()
     {
         isFiring = false;
-
     }
-
 }

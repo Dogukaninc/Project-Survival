@@ -6,7 +6,7 @@ using Cinemachine;
 public class WeaponRecoil : MonoBehaviour
 {
 
-    [HideInInspector] public CharacterAiming characterAiming; // Active Weapon içinde atamasý yapýlýyor o yüzden çalýþýyor
+    [HideInInspector] public CharacterAiming characterAiming; // Active Weapon iï¿½inde atamasï¿½ yapï¿½lï¿½yor o yï¿½zden ï¿½alï¿½ï¿½ï¿½yor
     [HideInInspector] public Cinemachine.CinemachineImpulseSource cameraShake;
     [HideInInspector] public Animator rigController;
 
@@ -46,7 +46,6 @@ public class WeaponRecoil : MonoBehaviour
         verticalRecoil = recoilPattern[index].y;
 
         index = NextIndex(index);
-        Debug.Log($"Sýradaki index: {index}");
 
         rigController.Play("weapon_recoil_" + weaponName, 1, 0f);
 

@@ -9,6 +9,8 @@ TagManager:
   - Tree
   - ScrapMetal
   - Stone
+  - Enemy
+  - DynamicProp
   layers:
   - Default
   - TransparentFX
