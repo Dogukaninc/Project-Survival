@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
@@ -32,10 +30,12 @@ public class CharacterInteraction : MonoBehaviour
     {
         FindInteractables(transform.position + posOffSet);
     }
+    
     private void LateUpdate()
     {
         InteractionPanelFacing();
     }
+    
     void FindInteractables(Vector3 center)
     {
 
