@@ -19,15 +19,15 @@ public class DamagePopUp : MonoBehaviour
         TextMeshPro popupText = Instantiate(this.__popupText, popupPos, Quaternion.identity); //Todo yön ayarlaması yap
         popupText.text = damagePoint.ToString();
         popupText.color = Color.white;
-        
+
         Quaternion billboardDir = Quaternion.LookRotation(Camera.main.transform.forward);
         popupText.transform.rotation = billboardDir;
         popupText.transform.localScale = new Vector3(UnityEngine.Random.Range(1, 2), 1, UnityEngine.Random.Range(1, 2));
 
         //popupText.material.DOFade(0,2f); //TODO material aynı olduğu için tüm ui ları etkiliyor galiba
-        popupText.transform.DOPunchRotation(popupText.transform.position,0.5f,10,1);
-        popupText.transform.DOPunchScale(popupText.transform.position,0.5f,1,0.5f);
-        
+        popupText.transform.DOPunchRotation(popupText.transform.position, 0.5f, 10, 1);
+        popupText.transform.DOPunchScale(Vector3.one, 0.5f, 1, 1f);
+
         popupText.transform.DOMove(popupPos + new Vector3(0, 2, 0), 2f).OnComplete(() => { Destroy(popupText); });
     }
 }

@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Pistol_Type_1
   m_EditorClassIdentifier: 
   damagePower: 5
-  fireRate: 15
+  fireRate: 1
   bulletSpeed: 1000
