@@ -1,48 +1,80 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using Survival_Swarm_Files.Scripts;
 using TMPro;
 using UnityEngine;
 
 public class WaveManager : MonoBehaviour
 {
-    private TimerTicker timerTicker;
+    //TODO tüm timerları bir pool'a koy işin bitiyorsa bir timerla o timer'ı pool'a gönder.
+    // Herhangi bir timer'a ihtiyacın varsa pool'dan çek
+
+    private readonly TimerTicker waveCountDownController = new TimerTicker();
 
     [SerializeField] private TextMeshProUGUI waveCountDownText;
-    [SerializeField] private TextMeshProUGUI waveStartedText;
+    [SerializeField] private TextMeshProUGUI waveStateText;
 
     [Header(" Wave Manager Settings ")] [SerializeField]
     private float timerValue;
 
-    private Action onWaveStarted;
+    private float defaultWaveTimerValue;
+
+    private bool canWaveStart;
+    private Action setWaveStart;
 
     private void OnEnable()
     {
-        onWaveStarted += StartWave;
+        setWaveStart += StartWave;
     }
 
     private void OnDisable()
     {
-        onWaveStarted -= StartWave;
+        setWaveStart -= StartWave;
     }
 
     void Start()
     {
-        timerTicker = new TimerTicker();
-
+        defaultWaveTimerValue = timerValue;
+        UpdateTimerText();
     }
 
     void Update()
     {
-        timerTicker.CustomCountdown(timerValue, timerValue, onWaveStarted);
-        waveCountDownText.text = timerValue.ToString();
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            canWaveStart = true;
+        }
+        if (canWaveStart)
+        {
+            waveCountDownController.WaveStartCountDown(ref timerValue, setWaveStart, ref canWaveStart);
+            UpdateTimerText();
+        }
+        WaveStateTextSetter();
+        
+    }
 
+    private void WaveStateTextSetter()
+    {
+        if (canWaveStart)
+        {
+            waveStateText.text = "Be Ready !!!";
+        }
+        else
+        {
+            waveStateText.text = "Let Them Come !!! (Press: H )";
+        }
     }
 
     private void StartWave()
     {
-        //waveStartedText.text = text;
-        Debug.Log("Asdasdsa yarraaa");
+        Debug.Log("WAVE BAŞLADI");
+        timerValue = defaultWaveTimerValue;
+        UpdateTimerText();
+    }
+
+    private void UpdateTimerText()
+    {
+        int minutes = Mathf.FloorToInt(timerValue / 60);
+        int seconds = Mathf.FloorToInt(timerValue % 60);
+        waveCountDownText.text = $"{minutes:00}:{seconds:00}";
     }
 }

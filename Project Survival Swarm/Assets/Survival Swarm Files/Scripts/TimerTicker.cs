@@ -5,14 +5,18 @@ namespace Survival_Swarm_Files.Scripts
 {
     public class TimerTicker
     {
-        public void CustomCountdown(float time, float maxValue, Action action)
+        public void WaveStartCountDown(ref float time, Action action, ref bool isTimerCounting)//TODO buraya waveler arası bool bir kontrolcü ile check edilen bir timer yaz
         {
-            time -= Time.deltaTime;
-            if (time <= 0)
+            if (isTimerCounting)
             {
-                action?.Invoke();
-                Debug.Log("Sayac bitti");
-                //time = maxValue;
+                time -= Time.deltaTime;
+                if (time <= 0)
+                {
+                    action?.Invoke();
+                    isTimerCounting = false;
+                    Debug.Log($"<color=cyan>Sayac bitti ve Wave başlıyor. Degerler ==> Timer:{time} Bool:{isTimerCounting}</color>");
+                    return;
+                }
             }
         }
     }

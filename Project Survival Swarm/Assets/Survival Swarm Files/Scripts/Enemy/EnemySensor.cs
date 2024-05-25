@@ -10,7 +10,7 @@ public class EnemySensor : MonoBehaviour
 
     void Start()
     {
-        hitColliders = new Collider[5]; //max algılama sayısı 
+        hitColliders = new Collider[5]; //max algÄ±lama sayÄ±sÄ± 
     }
 
     public GameObject Detect()

@@ -161,9 +161,9 @@ public class Firearm : MonoBehaviour
                 if (hitInfo.transform.TryGetComponent(out Enemy enemy))
                 {
                     HittingTarget(enemy.gameObject);
-                    var randomizePos = new Vector3(UnityEngine.Random.Range(.5f, 3f), UnityEngine.Random.Range(.5f, 1f),
-                        UnityEngine.Random.Range(.5f, 1f));
-                    
+                    var randomizePos = new Vector3(UnityEngine.Random.Range(-2f, 2f), UnityEngine.Random.Range(0, 1.5f),
+                        UnityEngine.Random.Range(-1f, 1f));
+
                     damagePopUp.DamagePopUpEffect(damagePower, enemy.transform.position + randomizePos);
                 }
             }

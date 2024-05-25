@@ -16,7 +16,7 @@ public class DamagePopUp : MonoBehaviour
     //Spawn olan textler her zaman bize bakacak
     public void DamagePopUpEffect(int damagePoint, Vector3 popupPos)
     {
-        TextMeshPro popupText = Instantiate(this.__popupText, popupPos, Quaternion.identity); //Todo yön ayarlaması yap
+        TextMeshPro popupText = Instantiate(this.__popupText, popupPos, Quaternion.identity);
         popupText.text = damagePoint.ToString();
         popupText.color = Color.white;
 
