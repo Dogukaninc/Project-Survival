@@ -95,8 +95,8 @@ public class ActiveWeapon : MonoBehaviour
 
         weapon = newWeapon;
         weapon.raycastDestination = crossHairTarget;
-        weapon.recoil.playerCam = playerCamera;
-        weapon.recoil.rigController = rigController;
+        //weapon.recoil.playerCam = playerCamera;
+        //weapon.recoil.rigController = rigController;
         weapon.transform.SetParent(weaponSlots[weaponSlotIndex], false);
         equipped_weapons[weaponSlotIndex] = weapon;
 
