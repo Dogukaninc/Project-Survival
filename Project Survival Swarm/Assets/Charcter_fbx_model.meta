@@ -1,6 +1,10 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Project Survival Swarm/Assets/Charcter_fbx_model.meta
 guid: ab8eaf34878a9d34b92fc969dd9d7492
 folderAsset: yes
+========
+guid: a9880ff8cf080354ea167a9f518b70bc
+>>>>>>>> Alper:Project Survival Swarm/Assets/Alper/Terrain.unity.meta
 DefaultImporter:
   externalObjects: {}
   userData: 
