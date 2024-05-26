@@ -10,6 +10,7 @@ TagManager:
   - ScrapMetal
   - Stone
   - Obstacle
+  - MainTarget
   layers:
   - Default
   - TransparentFX
