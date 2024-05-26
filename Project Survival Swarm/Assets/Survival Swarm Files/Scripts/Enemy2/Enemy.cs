@@ -55,6 +55,10 @@ public class Enemy : MonoBehaviour
     {
         animator.CrossFade(animationHash, 0.1f);
     }
+    public void SetTriggerAnimation(int animationHash)
+    {
+        animator.SetTrigger(animationHash);
+    }
     public void PerformAttack()
     {
         PlayAnimation(AttackHash);
