@@ -5,7 +5,7 @@ namespace Survival_Swarm_Files.Scripts
 {
     public class TimerTicker
     {
-        public void WaveStartCountDown(ref float time, Action action, ref bool isTimerCounting)//TODO buraya waveler arası bool bir kontrolcü ile check edilen bir timer yaz
+        public void WaveStartCountDown(ref float time, Action action, ref bool isTimerCounting) //TODO buraya waveler arası bool bir kontrolcü ile check edilen bir timer yaz
         {
             if (isTimerCounting)
             {
@@ -15,8 +15,17 @@ namespace Survival_Swarm_Files.Scripts
                     action?.Invoke();
                     isTimerCounting = false;
                     Debug.Log($"<color=cyan>Sayac bitti ve Wave başlıyor. Degerler ==> Timer:{time} Bool:{isTimerCounting}</color>");
-                    return;
                 }
+            }
+        }
+
+        public void SpawnEnemyInterval( ref float time,  float maxTime, Action action)
+        {
+            time -= Time.deltaTime;
+            if (time <= 0)
+            {
+                action?.Invoke();
+                time = maxTime;
             }
         }
     }

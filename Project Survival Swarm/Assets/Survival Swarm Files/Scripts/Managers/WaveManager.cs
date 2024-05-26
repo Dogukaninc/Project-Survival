@@ -1,13 +1,12 @@
 using System;
+using System.Collections.Generic;
 using Survival_Swarm_Files.Scripts;
 using TMPro;
 using UnityEngine;
 
 public class WaveManager : MonoBehaviour
 {
-    //TODO tüm timerları bir pool'a koy işin bitiyorsa bir timerla o timer'ı pool'a gönder.
-    // Herhangi bir timer'a ihtiyacın varsa pool'dan çek
-
+    
     private readonly TimerTicker waveCountDownController = new TimerTicker();
 
     [SerializeField] private TextMeshProUGUI waveCountDownText;
@@ -15,12 +14,13 @@ public class WaveManager : MonoBehaviour
 
     [Header(" Wave Manager Settings ")] [SerializeField]
     private float timerValue;
-
     private float defaultWaveTimerValue;
 
     private bool canWaveStart;
     private Action setWaveStart;
 
+    public List<EnemySpawner> EnemySpawners = new List<EnemySpawner>();
+    
     private void OnEnable()
     {
         setWaveStart += StartWave;
@@ -43,13 +43,14 @@ public class WaveManager : MonoBehaviour
         {
             canWaveStart = true;
         }
+
         if (canWaveStart)
         {
             waveCountDownController.WaveStartCountDown(ref timerValue, setWaveStart, ref canWaveStart);
             UpdateTimerText();
         }
+
         WaveStateTextSetter();
-        
     }
 
     private void WaveStateTextSetter()
@@ -67,6 +68,7 @@ public class WaveManager : MonoBehaviour
     private void StartWave()
     {
         Debug.Log("WAVE BAŞLADI");
+        StartSpawners();
         timerValue = defaultWaveTimerValue;
         UpdateTimerText();
     }
@@ -77,4 +79,14 @@ public class WaveManager : MonoBehaviour
         int seconds = Mathf.FloorToInt(timerValue % 60);
         waveCountDownText.text = $"{minutes:00}:{seconds:00}";
     }
+
+    private void StartSpawners()
+    {
+        foreach (var spawner in EnemySpawners)
+        {
+            spawner.startSpawner?.Invoke();;
+        }
+        
+    }
+    
 }

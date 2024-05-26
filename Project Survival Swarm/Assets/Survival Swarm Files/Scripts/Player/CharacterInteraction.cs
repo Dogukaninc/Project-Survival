@@ -28,7 +28,7 @@ public class CharacterInteraction : MonoBehaviour
 
     private void FixedUpdate()
     {
-        FindInteractables(transform.position + posOffSet);
+        //FindInteractables(transform.position + posOffSet);
     }
     
     private void LateUpdate()
