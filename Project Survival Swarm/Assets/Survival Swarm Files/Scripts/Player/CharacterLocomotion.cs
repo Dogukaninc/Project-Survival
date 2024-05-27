@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class CharacterLocomotion : MonoBehaviour
 {
@@ -29,25 +28,17 @@ public class CharacterLocomotion : MonoBehaviour
 
     int isSprintingParam = Animator.StringToHash("isSprinting");
 
-    [Header("Health Bar")]
-    public Slider healthSlider;
-
-    private Health _health;
     void Start()
     {
-        _health = GetComponent<Health>();
 
         animator = GetComponent<Animator>();
         cc = GetComponent<CharacterController>();
         activeWeapon = GetComponent<ActiveWeapon>();
         reloadWeapon = GetComponent<ReloadWeapon>();
         characterAiming = GetComponent<CharacterAiming>();
-        //Mouse'u baÅŸlangÄ±Ã§ta oyun ekranÄ±na kitle
+        //Mouse'u baþlangýçta oyun ekranýna kitle
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-        
-        HealthSliderValueSetter();
-
     }
 
     void Update()
@@ -60,15 +51,8 @@ public class CharacterLocomotion : MonoBehaviour
         {
             Jump();
         }
-        
-        HealthSliderValueSetter();
     }
-    
-    private void HealthSliderValueSetter()
-    {
-        healthSlider.value = _health.currentHealth / _health.MaxHealth;
-    }
-    
+
     bool IsSprinting()
     {
         bool isSprinting = Input.GetKey(KeyCode.LeftShift);
@@ -85,8 +69,8 @@ public class CharacterLocomotion : MonoBehaviour
         bool isSprinting = IsSprinting();
         animator.SetBool(isSprintingParam, isSprinting);
         rigController.SetBool(isSprintingParam, isSprinting);
-        //Her frame de sting degeri atamasÄ± yapmak GC da birikime neden olur
-        //DiÄŸer bÃ¼tÃ¼n animasyonlar iÃ§in de aynÄ± ÅŸekilde bir parametre tanÄ±mlayÄ±p StringToHash yaparak optimize edebiliriz
+        //Her frame de sting degeri atamasý yapmak GC da birikime neden olur
+        //Diðer bütün animasyonlar için de ayný þekilde bir parametre tanýmlayýp StringToHash yaparak optimize edebiliriz
     }
 
     private void Movement()
@@ -120,14 +104,14 @@ public class CharacterLocomotion : MonoBehaviour
         Vector3 stepForwardAmount = rootMotion * groundSpeed;
         Vector3 stepDownAmount = Vector3.down * stepDown;
 
-        cc.Move(stepForwardAmount + stepDownAmount);//Unity'nin kendi step offset'i sadece merdiven yukarÄ± Ã§alÄ±ÅŸÄ±yor merdiven aÅŸaÄŸÄ± Ã§alÄ±ÅŸmÄ±yor
+        cc.Move(stepForwardAmount + stepDownAmount);//Unity'nin kendi step offset'i sadece merdiven yukarý çalýþýyor merdiven aþaðý çalýþmýyor
         rootMotion = Vector3.zero;
 
-        //(Osiyonel) Burada eÄŸer karakter hala isGrounded deÄŸilse stepback adÄ±mÄ± uygulanabilir. Glitch i Ã¶nler
+        //(Osiyonel) Burada eðer karakter hala isGrounded deðilse stepback adýmý uygulanabilir. Glitch i önler
 
         if (!cc.isGrounded)
         {
-            //edge olan yerleden atlarken momentum almak iÃ§in direkt yere Ã§akÄ±lmamak iÃ§in
+            //edge olan yerleden atlarken momentum almak için direkt yere çakýlmamak için
             SetInAir(0);
         }
     }
@@ -168,7 +152,7 @@ public class CharacterLocomotion : MonoBehaviour
     }
 
 
-    //Unity'nin character controller iÃ§in etraftaki collider'larÄ± itebilmesi iÃ§in koyduÄŸu metod
+    //Unity'nin character controller için etraftaki collider'larý itebilmesi için koyduðu metod
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
         Rigidbody body = hit.collider.attachedRigidbody;

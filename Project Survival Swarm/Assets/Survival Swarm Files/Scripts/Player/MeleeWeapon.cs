@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class MeleeWeapon : MonoBehaviour
@@ -11,7 +12,7 @@ public class MeleeWeapon : MonoBehaviour
     public float damageAmount;
     public bool canSwing;
     public string meleeName;
-    
+
     [HideInInspector] public Animator rigController;
 
     public Transform damageCenter;
@@ -24,9 +25,9 @@ public class MeleeWeapon : MonoBehaviour
     {
         //Rig controller'ý equip de atadým
         canSwing = true;
-        
+
     }
-    
+
     public void SwingMelee()
     {
         if (Input.GetMouseButtonDown(0))
@@ -39,8 +40,8 @@ public class MeleeWeapon : MonoBehaviour
             }
         }
     }
-    
-    
+
+
     //todo Give damage yerine health.cs in içine TakeDamage fonsksiyonu oluþtur. Böylece her sýnýf için ayrý bir give damage olusturmayýz
     //todo Kaynak toplamak icin bir metod olusturup bu metodu kaynak toplama aracýna göre sekillendirebiliriz
     public void GiveDamage(float damage) //Animation Event
@@ -82,7 +83,7 @@ public class MeleeWeapon : MonoBehaviour
                     }
                 }
             }
-            
+
         }
     }
 
@@ -91,11 +92,12 @@ public class MeleeWeapon : MonoBehaviour
         yield return new WaitForSeconds(0.5f);//Sallama animasyonunun uzunlugu kadar beklet
         canSwing = true;
     }
-    
+
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(damageCenter.position, damageRadius);
     }
-    
+
 }

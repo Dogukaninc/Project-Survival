@@ -1,53 +1,38 @@
-using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    public float currentHealth;
-    private float maxHealth;
-    public float MaxHealth => maxHealth;
+    //[SerializeField] private TreeSO treeObject;
+    [HideInInspector] public float currentHealth;
+    public float health = 100f;
 
-    public enum ParentType
+    void Start()
     {
-        Player,
-        Other
-    }
-
-    public ParentType parentType;
-
-    private void Start()
-    {
-        maxHealth = currentHealth;
+       // currentHealth = treeObject.healthValue;
     }
 
     void Update()
     {
-        // if (Input.GetKeyDown(KeyCode.A))
-        // {
-        //     TakeDamage(10);
-        // }
-        if (parentType == ParentType.Player)
-        {
-            if (currentHealth <= 0)
-            {
-                GameStateHandler.Instance.GameOver();
-                Debug.Log("Ã–ldÃ¼m!!!");
-            }
-        }
-        else
-        {
-            if (currentHealth <= 0)
-            {
-                Debug.Log(" Hedef Ã–ldÃ¼ !!!");
-            }
-        }
 
-       
+
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(float amount)
     {
-        if (damage <= 0) return;
-        currentHealth -= damage;
+        health -= amount;
+        if (health <= 0f)
+        {
+            Die();
+        }
     }
+
+    void Die()
+    {
+        Debug.Log("Player died!");
+        // Oyuncu öldüðünde yapýlacak iþlemler burada
+        //Destroy(gameObject);
+    }
+
 }

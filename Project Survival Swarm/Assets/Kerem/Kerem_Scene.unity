@@ -107554,6 +107554,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentHealth: 0
+  health: 100
 --- !u!1 &492627839960509214
 GameObject:
   m_ObjectHideFlags: 0
@@ -107733,6 +107734,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentHealth: 0
+  health: 100
 --- !u!65 &492627840051183700
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -108346,8 +108348,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   viewRange: 10
   detectionLayer:
-    serializedVersion: 2
     m_Bits: 1280
+  hitColliders: []
 --- !u!114 &492627840214271430
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -108365,6 +108367,8 @@ MonoBehaviour:
   attackRange: 2
   playerTag: Player
   obstacleTag: Obstacle
+  navMeshAgent: {fileID: 0}
+  sensor: {fileID: 0}
 --- !u!114 &492627840214271432
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -108378,6 +108382,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemySO: {fileID: 11400000, guid: be9cecfea5c832d4d8a0a1fd9bad551e, type: 2}
+  movementSpeed: 0
+  damagePower: 0
+  animator: {fileID: 0}
+  _navMeshAgent: {fileID: 0}
+  _health: {fileID: 0}
 --- !u!65 &492627840214271433
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -108515,6 +108524,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentHealth: 100
+  health: 100
 --- !u!33 &492627840223716456
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -115874,6 +115884,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentHealth: 100
+  health: 100
 --- !u!114 &492627841501884006
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -115887,6 +115898,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemySO: {fileID: 11400000, guid: be9cecfea5c832d4d8a0a1fd9bad551e, type: 2}
+  movementSpeed: 0
+  damagePower: 0
+  animator: {fileID: 0}
+  _navMeshAgent: {fileID: 0}
+  _health: {fileID: 0}
 --- !u!65 &492627841501884007
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -115939,8 +115955,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   viewRange: 10
   detectionLayer:
-    serializedVersion: 2
     m_Bits: 1280
+  hitColliders: []
 --- !u!114 &492627841501884010
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -115958,6 +115974,8 @@ MonoBehaviour:
   attackRange: 2
   playerTag: Player
   obstacleTag: Obstacle
+  navMeshAgent: {fileID: 0}
+  sensor: {fileID: 0}
 --- !u!114 &492627841501884011
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118929,6 +118947,8 @@ MonoBehaviour:
   attackRange: 2
   playerTag: Player
   obstacleTag: Obstacle
+  navMeshAgent: {fileID: 0}
+  sensor: {fileID: 0}
 --- !u!114 &492627841636636001
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118978,6 +118998,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentHealth: 100
+  health: 100
 --- !u!1 &492627841636636006
 GameObject:
   m_ObjectHideFlags: 0
@@ -119017,8 +119038,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   viewRange: 10
   detectionLayer:
-    serializedVersion: 2
     m_Bits: 1280
+  hitColliders: []
 --- !u!4 &492627841636636024
 Transform:
   m_ObjectHideFlags: 0
@@ -119047,6 +119068,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemySO: {fileID: 11400000, guid: be9cecfea5c832d4d8a0a1fd9bad551e, type: 2}
+  movementSpeed: 0
+  damagePower: 0
+  animator: {fileID: 0}
+  _navMeshAgent: {fileID: 0}
+  _health: {fileID: 0}
 --- !u!65 &492627841636636029
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -120428,7 +120454,6 @@ MonoBehaviour:
   jumpDamp: 0.5
   groundSpeed: 1.2
   pushPower: 5
-  healthSlider: {fileID: 1824666307}
 --- !u!114 &2411118325234867286
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -120595,6 +120620,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentHealth: 100
+  health: 100
 --- !u!1 &2507437386055271849
 GameObject:
   m_ObjectHideFlags: 0
@@ -121390,6 +121416,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentHealth: 0
+  health: 100
 --- !u!65 &5432592903635024902
 BoxCollider:
   m_ObjectHideFlags: 0
