@@ -4,18 +4,35 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    public float currentHealth;
+    //[SerializeField] private TreeSO treeObject;
+    [HideInInspector] public float currentHealth;
+    public float health = 100f;
 
     void Start()
     {
+       // currentHealth = treeObject.healthValue;
     }
 
     void Update()
     {
-        if (currentHealth <= 0)
+
+
+    }
+
+    public void TakeDamage(float amount)
+    {
+        health -= amount;
+        if (health <= 0f)
         {
-            Debug.Log("Ã–ldÃ¼m!!!");
-            Destroy(gameObject);
+            Die();
         }
     }
+
+    void Die()
+    {
+        Debug.Log("Player died!");
+        // Oyuncu öldüðünde yapýlacak iþlemler burada
+        //Destroy(gameObject);
+    }
+
 }
