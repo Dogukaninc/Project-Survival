@@ -176,4 +176,9 @@ public class CharacterLocomotion : MonoBehaviour
         body.velocity = pushDir * pushPower;
     }
 
+    public void FootSteps()
+    {
+        AudioManager.Instance.PlayFootStepsSound();
+    }
+
 }

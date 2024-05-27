@@ -2131,8 +2131,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Do\u011Fukan \u0130ncirb\xF6len - B2109.0300\n\nMehmet Alper Bayra\xE7
-    - B2109.0300\n\nKerem \u015Eim\u015Fek - B2109.0300\n\nmolhamgarsafdnsd - B2109.0300"
+  m_text: "Do\u011Fukan \u0130ncirb\xF6len - B2103.090032\n\nMehmet Alper Bayra\xE7
+    - B2103.090049\n\nKerem \u015Eim\u015Fek - B2103.090036\n\nMolham Alfakhri -
+    B2103.090022"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

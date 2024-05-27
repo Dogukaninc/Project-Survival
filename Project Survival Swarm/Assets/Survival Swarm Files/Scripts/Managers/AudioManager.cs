@@ -1,30 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
 
-    [System.Serializable]
-    public class Sound
-    {
-        public string name;
-        public AudioClip clip;
-        public int poolSize = 5;
-        public bool loop;
-        [HideInInspector]
-        public Queue<AudioSource> audioSources = new Queue<AudioSource>();
-    }
-
-    public Sound[] sounds;
-    private Dictionary<string, Sound> soundDictionary = new Dictionary<string, Sound>();
-
+    public AudioSource PlayeraudioSource;
+    public AudioSource EnemyaudioSource;
+    public AudioSource FoodstepaudioSource;
     public AudioSource musicSource;
+    public AudioSource enemySource;
+    
     public AudioClip backgroundMusic;
-
-    public AudioSource announcementSource;
+    public AudioClip EnemyMusicClip;
+    public AudioClip footStepsClip;
     public AudioClip announcementClip;
+
+    public AudioClip machineGunSound;
+    public AudioClip pistolSound;
 
     private void Awake()
     {
@@ -37,48 +32,26 @@ public class AudioManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
-        InitializeSoundPool();
     }
 
-    private void Start()
-    {
-        PlayBackgroundMusic();
-    }
 
-    private void InitializeSoundPool()
+
+    public void PlaySound(AudioClip clip)
     {
-        foreach (var sound in sounds)
+        if (PlayeraudioSource != null)
         {
-            soundDictionary[sound.name] = sound;
-            for (int i = 0; i < sound.poolSize; i++)
-            {
-                AudioSource audioSource = gameObject.AddComponent<AudioSource>();
-                audioSource.clip = sound.clip;
-                audioSource.loop = sound.loop;
-                sound.audioSources.Enqueue(audioSource);
-            }
+            PlayeraudioSource.clip = clip;
+            PlayeraudioSource.Play();
         }
     }
-
-    public void PlaySound(string name)
+    
+    public void PlayFootStepsSound(AudioClip clip)
     {
-        if (soundDictionary.ContainsKey(name))
+        if (FoodstepaudioSource != null)
         {
-            Sound sound = soundDictionary[name];
-            if (sound.audioSources.Count > 0)
-            {
-                AudioSource audioSource = sound.audioSources.Dequeue();
-                audioSource.Play();
-                StartCoroutine(ReturnToPoolAfterPlaying(audioSource, sound));
-            }
+            FoodstepaudioSource.clip = clip;
+            FoodstepaudioSource.Play();
         }
-    }
-
-    private IEnumerator ReturnToPoolAfterPlaying(AudioSource source, Sound sound)
-    {
-        yield return new WaitWhile(() => source.isPlaying);
-        sound.audioSources.Enqueue(source);
     }
 
     public void PlayBackgroundMusic()
@@ -93,10 +66,26 @@ public class AudioManager : MonoBehaviour
 
     public void PlayAnnouncement()
     {
-        if (announcementSource != null && announcementClip != null)
+        if (musicSource != null && announcementClip != null)
         {
-            announcementSource.clip = announcementClip;
-            announcementSource.Play();
+            musicSource.clip = announcementClip;
+            musicSource.Play();
         }
+    }
+
+    public void PlayMachineGunSound()
+    {
+        PlaySound(machineGunSound);
+        //AudioManager.Instance.PlayMachineGunSound();
+    }
+
+    public void PlayPistolSound()
+    {
+        PlaySound(pistolSound);
+    }
+    
+    public void PlayFootStepsSound()
+    {
+        PlayFootStepsSound(footStepsClip);
     }
 }

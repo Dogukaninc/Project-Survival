@@ -54,7 +54,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponSlot: 0
   isFiring: 0
-  fireRate: 15
+  fireRate: 10
   bulletSpeed: 1000
   bulletDrop: 300
   muzzleFlash:
