@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Firearm_Type_1
   m_EditorClassIdentifier: 
   damagePower: 10
-  fireRate: 10
+  fireRate: 25
   bulletSpeed: 1000

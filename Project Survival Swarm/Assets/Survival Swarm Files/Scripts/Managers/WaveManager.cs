@@ -20,8 +20,7 @@ public class WaveManager : MonoBehaviour
     private Action setWaveStart;
 
     public List<EnemySpawner> EnemySpawners = new List<EnemySpawner>();
-    [SerializeField] private int totalEnemysToSpawn;
-    public int TOTALENEMYSTOSPAWN => totalEnemysToSpawn;
+    
     private void OnEnable()
     {
         setWaveStart += StartWave;

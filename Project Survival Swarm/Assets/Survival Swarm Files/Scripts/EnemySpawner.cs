@@ -8,13 +8,12 @@ using UnityEngine;
 // Enemy spawn pointleri her elde map prefabine göre ayarlanacak
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] private WaveManager waveManager;
-
     private readonly TimerTicker timerTicker = new TimerTicker();
 
-    [Header(" Spawner Settings ")] [Space(5)] [SerializeField]
-    private int enemySpawnCount;
-
+    [Header(" Spawner Settings ")]
+    [Space(5)] 
+    
+    [SerializeField] private int enemySpawnCount;
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private float spawnIntervalTime;
 
@@ -45,20 +44,15 @@ public class EnemySpawner : MonoBehaviour
 
     void Update()
     {
-        if (spawnedEnemyCount < waveManager.TOTALENEMYSTOSPAWN)
+        if (canSpawnerWork && spawnedEnemyCount < enemySpawnCount)
         {
-            if (canSpawnerWork && spawnedEnemyCount < enemySpawnCount)
-            {
-                timerTicker.SpawnEnemyInterval(ref spawnIntervalTime, spawnDefaultTimeValue, spawnEnemy);
-            }
-            else
-            {
-                canSpawnerWork = false;
-                spawnedEnemyCount = 0;
-            }
+            timerTicker.SpawnEnemyInterval(ref spawnIntervalTime, spawnDefaultTimeValue, spawnEnemy);
         }
-
-        
+        else
+        {
+            canSpawnerWork = false;
+            spawnedEnemyCount = 0;
+        }
     }
 
     private void SetSpawnerWorkState()
