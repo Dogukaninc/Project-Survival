@@ -39,14 +39,14 @@ public class InteractbleObject : MonoBehaviour, IInteractable
 
     public void ShowPanel()
     {
-        GameStateHandler.instance.PauseGame();
+        GameStateHandler.Instance.PauseGame();
         showcasePanel.SetActive(true);
         showcasePanel.transform.DOScale(1, 0.2f);
     }
 
     public void ClosePanel()
     {
-        GameStateHandler.instance.ContinueGame();
+        GameStateHandler.Instance.ContinueGame();
         showcasePanel.transform.DOScale(0, 0.2f).OnComplete(() =>
         {
             showcasePanel.SetActive(false);

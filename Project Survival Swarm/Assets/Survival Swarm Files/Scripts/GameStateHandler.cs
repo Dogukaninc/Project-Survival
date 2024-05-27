@@ -2,23 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameStateHandler : MonoBehaviour
+public class GameStateHandler : MonoSingleton<GameStateHandler>
 {
 
     public GameObject player;
-
-    public static GameStateHandler instance;
-    private void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            Destroy(instance);
-        } 
-    }
 
     public void PauseGame()
     {
@@ -27,6 +14,7 @@ public class GameStateHandler : MonoBehaviour
         player.GetComponent<ActiveWeapon>().enabled = false;
         player.GetComponent<ReloadWeapon>().enabled = false;
         //player.GetComponent<Animator>().enabled = false;
+        // TODO animasyon layer'ı burada pause layer'a geçsin
 
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
@@ -43,6 +31,12 @@ public class GameStateHandler : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+    }
+    
+    public void GameOver()
+    {
+        PauseGame();
+        Debug.Log("GAME OVER !!!!!");
     }
 
 }
