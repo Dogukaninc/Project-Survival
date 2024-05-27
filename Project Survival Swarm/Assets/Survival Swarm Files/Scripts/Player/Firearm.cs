@@ -149,6 +149,7 @@ public class Firearm : MonoBehaviour
 
         if (ammoCount <= 0) { return; }
         ammoCount--;
+        AudioManager.Instance.PlaySound("MachineGun");
 
         foreach (var particle in muzzleFlash)
         {

@@ -1594,15 +1594,15 @@ ReflectionProbe:
   m_Mode: 0
   m_RefreshMode: 0
   m_TimeSlicingMode: 0
-  m_Resolution: 128
+  m_Resolution: 256
   m_UpdateFrequency: 0
   m_BoxSize: {x: 218.021, y: 25.486382, z: 135.52661}
   m_BoxOffset: {x: -52.688263, y: 2.4190483, z: 9.913361}
   m_NearClip: 0.3
   m_FarClip: 1000
   m_ShadowDistance: 100
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 1, g: 1, b: 1, a: 0}
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
