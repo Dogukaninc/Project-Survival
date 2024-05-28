@@ -16,7 +16,7 @@ public class GameStateHandler : MonoSingleton<GameStateHandler>
         player.GetComponent<ActiveWeapon>().enabled = false;
         player.GetComponent<ReloadWeapon>().enabled = false;
         //player.GetComponent<Animator>().enabled = false;
-        // TODO animasyon layer'ý burada pause layer'a geçsin
+        // TODO animasyon layer'Ä± burada pause layer'a geÃ§sin
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
 

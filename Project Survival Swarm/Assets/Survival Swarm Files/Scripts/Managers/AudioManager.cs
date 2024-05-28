@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -48,6 +49,11 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        Play("Theme");
+    }
+
     public void Play(string soundName)
     {
         if (soundDictionary.ContainsKey(soundName))
@@ -55,13 +61,13 @@ public class AudioManager : MonoBehaviour
             AudioSource source = soundDictionary[soundName];
             if (source.isPlaying)
             {
-                source.Stop(); // Ayný sesi tekrar çalmak için önce durdur
+                source.Stop(); // Aynï¿½ sesi tekrar ï¿½almak iï¿½in ï¿½nce durdur
             }
             source.Play();
         }
         else
         {
-            Debug.Log("Ses: " + soundName + " bulunamadý!");
+            Debug.Log("Ses: " + soundName + " bulunamadï¿½!");
         }
     }
 
@@ -73,7 +79,7 @@ public class AudioManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("Ses: " + soundName + " bulunamadý!");
+            Debug.Log("Ses: " + soundName + " bulunamadï¿½!");
         }
     }
 
@@ -85,7 +91,7 @@ public class AudioManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("Ses: " + soundName + " bulunamadý!");
+            Debug.Log("Ses: " + soundName + " bulunamadï¿½!");
         }
     }
     public void SetPitch(string soundName, float pitch)

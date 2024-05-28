@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
+using DG.Tweening;
 using Survival_Swarm_Files.Scripts;
 using TMPro;
 using UnityEngine;
 
 public class WaveManager : MonoBehaviour
 {
-    
+    public GameObject waveGate;
+    public Transform targetPos;
     private readonly TimerTicker waveCountDownController = new TimerTicker();
 
     [SerializeField] private TextMeshProUGUI waveCountDownText;
@@ -43,6 +45,7 @@ public class WaveManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.H))
         {
             canWaveStart = true;
+            OpenGate();
         }
 
         if (canWaveStart)
@@ -52,6 +55,11 @@ public class WaveManager : MonoBehaviour
         }
 
         WaveStateTextSetter();
+    }
+    
+    public void OpenGate()
+    {
+        waveGate.transform.DOMove(targetPos.transform.position,0.8f);
     }
 
     private void WaveStateTextSetter()

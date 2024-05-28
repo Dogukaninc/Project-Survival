@@ -10,6 +10,7 @@ using UnityEngine.AI;
 // Enemy spawn pointleri her elde map prefabine göre ayarlanacak
 public class EnemySpawner : MonoBehaviour
 {
+    public GameObject enemyPrefab;
     [SerializeField] private WaveManager waveManager;
 
     private readonly TimerTicker timerTicker = new TimerTicker();
@@ -72,7 +73,7 @@ public class EnemySpawner : MonoBehaviour
 
     public void SpawnEnemy()
     {
-        GameObject enemyObject = ObjectPooler.Instance.SpawnFromPool("Enemy", spawnPoint.position, quaternion.identity);
+        GameObject enemyObject = Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
         spawnedEnemyCount++;
         StartCoroutine(InitializeEnemy(enemyObject));
     }

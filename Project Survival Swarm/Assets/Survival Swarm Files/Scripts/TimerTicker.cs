@@ -28,5 +28,14 @@ namespace Survival_Swarm_Files.Scripts
                 time = maxTime;
             }
         }
+        public void BulletInterval( ref float time,  float maxTime, Action action)
+        {
+            time -= Time.deltaTime;
+            if (time <= 0)
+            {
+                action?.Invoke();
+                time = maxTime;
+            }
+        }
     }
 }

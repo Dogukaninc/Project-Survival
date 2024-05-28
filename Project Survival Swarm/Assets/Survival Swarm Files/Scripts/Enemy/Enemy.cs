@@ -91,7 +91,6 @@ public class Enemy : MonoBehaviour
 
     private void DealDamage()
     {
-
         Debug.Log("Player damaged!");
     }
 }

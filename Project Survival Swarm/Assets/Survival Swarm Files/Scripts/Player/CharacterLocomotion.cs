@@ -36,13 +36,13 @@ public class CharacterLocomotion : MonoBehaviour
 
     void Start()
     {
-
+        _health = GetComponent<Health>();
         animator = GetComponent<Animator>();
         cc = GetComponent<CharacterController>();
         activeWeapon = GetComponent<ActiveWeapon>();
         reloadWeapon = GetComponent<ReloadWeapon>();
         characterAiming = GetComponent<CharacterAiming>();
-        //Mouse'u başlangıçta oyun ekranına kitle
+        //Mouse'u baÅŸlangÄ±Ã§ta oyun ekranÄ±na kitle
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
 
@@ -63,7 +63,7 @@ public class CharacterLocomotion : MonoBehaviour
     }
     private void HealthSliderValueSetter()
     {
-       // healthSlider.value = _health.currentHealth / _health.MaxHealth;
+       healthSlider.value = _health.currentHealth / _health.MaxHealth;
     }
 
     bool IsSprinting()
@@ -82,8 +82,8 @@ public class CharacterLocomotion : MonoBehaviour
         bool isSprinting = IsSprinting();
         animator.SetBool(isSprintingParam, isSprinting);
         rigController.SetBool(isSprintingParam, isSprinting);
-        //Her frame de sting degeri ataması yapmak GC da birikime neden olur
-        //Diğer bütün animasyonlar için de aynı şekilde bir parametre tanımlayıp StringToHash yaparak optimize edebiliriz
+        //Her frame de sting degeri atamasÄ± yapmak GC da birikime neden olur
+        //DiÄŸer bÃ¼tÃ¼n animasyonlar iÃ§in de aynÄ± ÅŸekilde bir parametre tanÄ±mlayÄ±p StringToHash yaparak optimize edebiliriz
     }
 
     private void Movement()
@@ -117,14 +117,14 @@ public class CharacterLocomotion : MonoBehaviour
         Vector3 stepForwardAmount = rootMotion * groundSpeed;
         Vector3 stepDownAmount = Vector3.down * stepDown;
 
-        cc.Move(stepForwardAmount + stepDownAmount);//Unity'nin kendi step offset'i sadece merdiven yukarı çalışıyor merdiven aşağı çalışmıyor
+        cc.Move(stepForwardAmount + stepDownAmount);//Unity'nin kendi step offset'i sadece merdiven yukarÄ± Ã§alÄ±ÅŸÄ±yor merdiven aÅŸaÄŸÄ± Ã§alÄ±ÅŸmÄ±yor
         rootMotion = Vector3.zero;
 
-        //(Osiyonel) Burada eğer karakter hala isGrounded değilse stepback adımı uygulanabilir. Glitch i önler
+        //(Osiyonel) Burada eÄŸer karakter hala isGrounded deÄŸilse stepback adÄ±mÄ± uygulanabilir. Glitch i Ã¶nler
 
         if (!cc.isGrounded)
         {
-            //edge olan yerleden atlarken momentum almak için direkt yere çakılmamak için
+            //edge olan yerleden atlarken momentum almak iÃ§in direkt yere Ã§akÄ±lmamak iÃ§in
             SetInAir(0);
         }
     }
@@ -164,8 +164,7 @@ public class CharacterLocomotion : MonoBehaviour
         animator.SetBool("isJumping", true);
     }
 
-
-    //Unity'nin character controller için etraftaki collider'ları itebilmesi için koyduğu metod
+    //Unity'nin character controller iÃ§in etraftaki collider'larÄ± itebilmesi iÃ§in koyduÄŸu metod
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
         Rigidbody body = hit.collider.attachedRigidbody;
