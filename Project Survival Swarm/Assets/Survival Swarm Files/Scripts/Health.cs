@@ -6,26 +6,50 @@ public class Health : MonoBehaviour
 {
     //[SerializeField] private TreeSO treeObject;
     [HideInInspector] public float currentHealth;
-    public float health = 100f;
+    private float maxHealth;
+    public float MaxHealth => maxHealth;
 
-    void Start()
+    public enum ParentType
     {
-       // currentHealth = treeObject.healthValue;
+        Player,
+        Other
+    }
+
+    public ParentType parentType;
+
+    private void Start()
+    {
+        maxHealth = currentHealth;
     }
 
     void Update()
     {
-
+        // if (Input.GetKeyDown(KeyCode.A))
+        // {
+        //     TakeDamage(10);
+        // }
+        if (parentType == ParentType.Player)
+        {
+            if (currentHealth <= 0)
+            {
+                GameStateHandler.Instance.GameOver();
+                Debug.Log("Öldüm!!!");
+            }
+        }
+        else
+        {
+            if (currentHealth <= 0)
+            {
+                Debug.Log(" Hedef Öldü !!!");
+            }
+        }
 
     }
 
-    public void TakeDamage(float amount)
+    public void TakeDamage(float damage)
     {
-        health -= amount;
-        if (health <= 0f)
-        {
-            Die();
-        }
+        if (damage <= 0) return;
+        currentHealth -= damage;
     }
 
     void Die()

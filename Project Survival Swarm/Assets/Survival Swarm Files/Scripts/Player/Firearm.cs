@@ -95,6 +95,7 @@ public class Firearm : MonoBehaviour
 
     public void UpdateBullets(float deltaTime)
     {
+        
         SimulateBullets(deltaTime);
         DestroyBullets();
     }
@@ -149,7 +150,14 @@ public class Firearm : MonoBehaviour
 
         if (ammoCount <= 0) { return; }
         ammoCount--;
-
+        if (weaponName=="rifle") 
+        {
+            AudioManager.Instance.Play("Shoot1");
+        }
+        if (weaponName == "pistol")
+        {
+            AudioManager.Instance.Play("Shoot2");
+        }
         foreach (var particle in muzzleFlash)
         {
             particle.Emit(1);

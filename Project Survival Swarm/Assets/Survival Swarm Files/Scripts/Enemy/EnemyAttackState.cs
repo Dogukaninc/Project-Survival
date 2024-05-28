@@ -30,6 +30,7 @@ public class EnemyAttackState : IEnemyState
         }
         else if (enemy.canAttack && enemy.PlayerInAttackRange() && !enemy.canIdle)
         {
+            AudioManager.Instance.Play("MonsterAttack");
             enemy.PerformAttack();
             Debug.Log("<color=blue> Range'deyim Saldýrdým </color>");
             enemy.canAttack = false;

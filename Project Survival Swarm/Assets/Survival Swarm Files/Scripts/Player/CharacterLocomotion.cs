@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CharacterLocomotion : MonoBehaviour
 {
@@ -28,6 +29,11 @@ public class CharacterLocomotion : MonoBehaviour
 
     int isSprintingParam = Animator.StringToHash("isSprinting");
 
+    [Header("Health Bar")]
+    public Slider healthSlider;
+
+    private Health _health;
+
     void Start()
     {
 
@@ -39,6 +45,8 @@ public class CharacterLocomotion : MonoBehaviour
         //Mouse'u baþlangýçta oyun ekranýna kitle
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+
+        HealthSliderValueSetter();
     }
 
     void Update()
@@ -51,6 +59,11 @@ public class CharacterLocomotion : MonoBehaviour
         {
             Jump();
         }
+        HealthSliderValueSetter();
+    }
+    private void HealthSliderValueSetter()
+    {
+        healthSlider.value = _health.currentHealth / _health.MaxHealth;
     }
 
     bool IsSprinting()
@@ -174,6 +187,10 @@ public class CharacterLocomotion : MonoBehaviour
 
         // Apply the push
         body.velocity = pushDir * pushPower;
+    }
+    public void FootSteps()
+    {
+        AudioManager.Instance.Play("FootSteps");
     }
 
 }

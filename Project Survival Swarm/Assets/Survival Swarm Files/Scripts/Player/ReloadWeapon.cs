@@ -25,6 +25,7 @@ public class ReloadWeapon : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.R) || weapon.ammoCount <= 0)
             {
+                AudioManager.Instance.Play("Reload");
                 isReloading = true;
                 rigController.SetTrigger("reload_weapon");
             }
@@ -67,6 +68,7 @@ public class ReloadWeapon : MonoBehaviour
 
     void DetachMagazine()
     {
+        
         Firearm weapon = activeWeapon.GetActiveWeapon();
         magazineHand = Instantiate(weapon.magazine, leftHand, true); //burdaki true olayýna bak ne pozisyonu bu
         weapon.magazine.SetActive(false);
