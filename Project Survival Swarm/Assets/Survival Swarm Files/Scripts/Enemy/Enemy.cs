@@ -26,6 +26,17 @@ public class Enemy : MonoBehaviour
 
     void Start()
     {
+        GameObject targetObject = GameObject.Find("Target");
+        GameObject playerObject = GameObject.Find("Player");
+        if (playerObject != null)
+        {
+            player = playerObject.transform;
+        }
+        if (targetObject != null)
+        {
+            mainTarget = targetObject.transform;
+        }
+
         agent = GetComponent<NavMeshAgent>();
         stateMachine = new StateMachine();
 
