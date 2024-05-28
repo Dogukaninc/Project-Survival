@@ -1,3 +1,4 @@
+using Survival_Swarm_Files.Scripts.Scriptables;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,11 +13,13 @@ public class Firearm : MonoBehaviour
         public TrailRenderer tracer;
     }
 
+    [SerializeField] private FirearmSO firearmSO;
+    private DamagePopUp damagePopUp;
+
     public ActiveWeapon.WeaponSlot weaponSlot;
     public bool isFiring = false;
 
-    public float fireRate = 25;
-    public float bulletSpeed = 1000f;
+
     public float bulletDrop = 0f;
     public ParticleSystem[] muzzleFlash;
     public ParticleSystem hitEffect;
@@ -37,6 +40,18 @@ public class Firearm : MonoBehaviour
     private List<Bullet> bullets = new List<Bullet>();
     private float maxLifeTime = 3.0f;
 
+    [Header(" Firearm Properties ")] private float fireRate; //25
+    private float bulletSpeed; //1000
+    private int damagePower;
+
+    private void Start()
+    {
+        damagePopUp = FindObjectOfType<DamagePopUp>();
+
+        fireRate = firearmSO.fireRate;
+        bulletSpeed = firearmSO.bulletSpeed;
+        damagePower = firearmSO.damagePower;
+    }
     Vector3 GetPosition(Bullet bullet)
     {
         // p + v*t + 0.5*g*t*t
@@ -95,7 +110,7 @@ public class Firearm : MonoBehaviour
 
     public void UpdateBullets(float deltaTime)
     {
-        
+
         SimulateBullets(deltaTime);
         DestroyBullets();
     }
@@ -132,17 +147,39 @@ public class Firearm : MonoBehaviour
             bullet.tracer.transform.position = hitInfo.point;
             bullet.time = maxLifeTime;
 
-            //todo Hasar verme mantýðý burada kurulacak, her silah kendi hasar oranlarýan sahip olacak
-            //Collision Impulse
-            var rb2D = hitInfo.collider.GetComponent<Rigidbody>();
-            if (rb2D)
+            if (hitInfo.collider.CompareTag("DynamicProp"))
             {
-                rb2D.AddForceAtPosition(ray.direction * 20, hitInfo.point, ForceMode.Impulse);
+                var rb2D = hitInfo.collider.GetComponent<Rigidbody>();
+
+                if (rb2D)
+                {
+                    rb2D.AddForceAtPosition(ray.direction * 20, hitInfo.point, ForceMode.Impulse);
+                }
             }
+            else if (hitInfo.collider.CompareTag("Enemy"))
+            {
+                if (hitInfo.transform.TryGetComponent(out Enemy enemy))
+                {
+                    HittingTarget(enemy.gameObject);
+                    var randomizePos = new Vector3(UnityEngine.Random.Range(.5f, 3f), UnityEngine.Random.Range(.5f, 1f),
+                        UnityEngine.Random.Range(.5f, 1f));
+
+                    damagePopUp.DamagePopUpEffect(damagePower, enemy.transform.position + randomizePos);
+                }
+
+            }
+
         }
 
         bullet.tracer.transform.position = end;
 
+    }
+    private void HittingTarget(GameObject damagable)
+    {
+        if (damagable.TryGetComponent(out IDamagable iDamagable))
+        {
+            iDamagable.TakeDamage(damagePower);
+        }
     }
 
     private void FireBullet()
@@ -150,7 +187,7 @@ public class Firearm : MonoBehaviour
 
         if (ammoCount <= 0) { return; }
         ammoCount--;
-        if (weaponName=="rifle") 
+        if (weaponName == "rifle")
         {
             AudioManager.Instance.Play("Shoot1");
         }

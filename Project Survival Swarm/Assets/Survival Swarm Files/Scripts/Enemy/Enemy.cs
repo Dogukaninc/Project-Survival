@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -30,19 +31,19 @@ public class Enemy : MonoBehaviour
         GameObject playerObject = GameObject.Find("Player");
         if (playerObject != null)
         {
-            player = playerObject.transform;
+            this.player = playerObject.transform;
         }
         if (targetObject != null)
         {
-            mainTarget = targetObject.transform;
+            this.mainTarget = targetObject.transform;
         }
 
-        agent = GetComponent<NavMeshAgent>();
-        stateMachine = new StateMachine();
+        this.agent = this.GetComponent<NavMeshAgent>();
+        this.stateMachine = new StateMachine();
 
-        stateMachine.ChangeState(new EnemyNavState(this, agent, mainTarget));
+        this.stateMachine.ChangeState(new EnemyNavState(this, agent, mainTarget));
 
-        PlayAnimation(WalkHash);
+        this.PlayAnimation(WalkHash);
 
     }
 

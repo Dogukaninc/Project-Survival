@@ -51,10 +51,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5b408c96c218c14d836982e7155e022, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  firearmSO: {fileID: 11400000, guid: 6bf27f0c2c7ae414ab7a84d54791c12e, type: 2}
   weaponSlot: 1
   isFiring: 0
-  fireRate: 1
-  bulletSpeed: 1000
   bulletDrop: 300
   muzzleFlash:
   - {fileID: 4093538973418660126}

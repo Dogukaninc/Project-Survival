@@ -6,6 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Survival Swarm Files/Scenes/SplashScreen.unity
+    guid: 8946f25f020e365498ba062d3db839d0
+  - enabled: 1
+    path: Assets/Survival Swarm Files/Scenes/MainMenu.unity
+    guid: 7561fb7fffa23f348971cea2cb3810af
+  - enabled: 1
+    path: Assets/Kerem/Kerem_Scene.unity
+    guid: 827ea7e0ab959cb49ac43efc9dc6ad3a
+  - enabled: 0
     path: Assets/Survival Swarm Files/Scenes/GameScene-Dogukan.unity
     guid: 99c9720ab356a0642a771bea13969a05
   m_configObjects: {}

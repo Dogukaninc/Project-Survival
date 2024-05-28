@@ -15,7 +15,14 @@ public class EnemyNavState : EnemyBaseState
     public override void Enter()
     {
         enemy.PlayAnimation(Enemy.WalkHash);
-        agent.SetDestination(mainTarget.position);
+        if (agent != null && agent.isActiveAndEnabled && agent.isOnNavMesh)
+        {
+            agent.SetDestination(mainTarget.position);
+        }
+        else
+        {
+            Debug.Log("NavMeshAgent is not active or not placed on a NavMesh.");
+        }
     }
 
     public override void Update()

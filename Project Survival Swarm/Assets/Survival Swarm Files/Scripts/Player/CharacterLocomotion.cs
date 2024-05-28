@@ -63,7 +63,7 @@ public class CharacterLocomotion : MonoBehaviour
     }
     private void HealthSliderValueSetter()
     {
-        healthSlider.value = _health.currentHealth / _health.MaxHealth;
+       // healthSlider.value = _health.currentHealth / _health.MaxHealth;
     }
 
     bool IsSprinting()
