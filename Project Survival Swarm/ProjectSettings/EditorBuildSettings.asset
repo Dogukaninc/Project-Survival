@@ -12,9 +12,6 @@ EditorBuildSettings:
     path: Assets/Survival Swarm Files/Scenes/MainMenu.unity
     guid: 7561fb7fffa23f348971cea2cb3810af
   - enabled: 1
-    path: Assets/Kerem/Kerem_Scene.unity
-    guid: 827ea7e0ab959cb49ac43efc9dc6ad3a
-  - enabled: 0
-    path: Assets/Survival Swarm Files/Scenes/GameScene-Dogukan.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+    path: Assets/Survival Swarm Files/Scenes/Game.unity
+    guid: 15fa8f3308e0d6e458e43397b36d6b0a
   m_configObjects: {}

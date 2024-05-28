@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Health : MonoBehaviour
+public class Health : MonoBehaviour, IDamagable
 {
     //[SerializeField] private TreeSO treeObject;
-    [HideInInspector] public float currentHealth;
+    public float currentHealth;
     private float maxHealth;
     public float MaxHealth => maxHealth;
 
@@ -40,23 +40,16 @@ public class Health : MonoBehaviour
         {
             if (currentHealth <= 0)
             {
+                ObjectPooler.Instance.ReturnBackToPool(this.gameObject);
                 Debug.Log(" Hedef Öldü !!!");
             }
         }
 
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(int damagePoint)
     {
-        if (damage <= 0) return;
-        currentHealth -= damage;
+        if (damagePoint <= 0) return;
+        currentHealth -= damagePoint;
     }
-
-    void Die()
-    {
-        Debug.Log("Player died!");
-        // Oyuncu öldüðünde yapýlacak iþlemler burada
-        //Destroy(gameObject);
-    }
-
 }
